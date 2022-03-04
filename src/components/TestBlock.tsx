@@ -22,7 +22,7 @@ const Inner = (): JSX.Element => {
     margin-top: 0;
     margin: 0;
     width: 100%;
-    background-color: var(--color1);
+    // background-color: var(--color1);
   `;
   const Button = styled.button``;
   const Select = styled.select``;
@@ -95,7 +95,7 @@ const TestBlock = (): JSX.Element => {
   const Container = styled.div`
     height: 100%;
     width: 100%;
-    background-color: var(--color1);
+    // background-color: var(--color1);
     overflow-y: scroll;
   `;
   return (

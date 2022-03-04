@@ -159,9 +159,15 @@ const EndControl = (props: Props): JSX.Element | null => {
   const tool = current.tool.toLowerCase();
   const { inputIndex } = selected;
 
-  const [colorIn, colorInSet] = useState(fill.default);
-  const [colorOut, colorOutSet] = useState(stroke.default);
-  const [colorLine, colorLineSet] = useState(lineCol.default);
+  const [colorIn, colorInSet] = useState(
+    tool === "t" ? fill.inactive : fill.default
+  );
+  const [colorOut, colorOutSet] = useState(
+    tool === "t" ? stroke.inactive : lineCol.default
+  );
+  const [colorLine, colorLineSet] = useState(
+    tool === "t" ? lineCol.inactive : lineCol.default
+  );
 
   if (
     (tool === "c" && inputIndex !== 0) ||

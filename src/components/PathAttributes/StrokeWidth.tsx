@@ -7,89 +7,46 @@ import {
   $store,
   updatePathAttribute,
   updatePathProps,
+  $selectedState,
 } from "../../index";
 
 const StrokeWidth = (): JSX.Element => {
-  
-  const store = useStoreMap({
-    store: $store,
-    fn: (state: State) => {
-      return Result;
-    },
-  });
-  
   // const [state, stateSet] = useState(0);
-  // const { pathIndex } = store.selected;
+  const { pathIndex } = useStore($selectedState);
+  const { paths } = useStore($store);
 
-  /* const Input = (): JSX.Element => {
+  const Container = styled.div``;
+  const Inputt = styled.input`
+    max-width: 75px;
+  `;
+
+  const Input = (): JSX.Element => {
     return (
-      <input
+      <Inputt
         key="strokeWidthInput"
+        defaultValue={
+          paths[pathIndex] !== undefined ? paths[pathIndex].attr.strokeWidth : 1
+        }
         onChange={(e) => {
           updatePathProps({ pathIndex, strokeWidth: e.target.value });
         }}
       />
     );
-  }; */
-
-  const sendFormFx = createEffect((params) => {
-    console.log(params);
-  });
-  const onChange = createEvent();
-  const setField = createEvent();
-  $store.on(setField, (s, { key, value }) => {
-    return {
-      ...s,
-      [key]: value,
-    };
-  });
-
-  sample({ clock: onChange, source: $store });
-
-  const handleChange = setField.prepend((e) => {
-    console.log($store.getState());
-    return {
-      key: e.target.name,
-      value: e.target.value,
-    };
-  });
-
-  const Field = ({ name, type, label }) => {
-    const value = useStoreMap({
-      store: $store, // take $form's state
-      keys: [name], // watch for changes of `name`
-      fn: (values) => {
-        return values[name] || "";
-      }, // retrieve data from $form's state in this way (note: there will be an error, if undefined is returned)
-    });
-
-    return (
-      <div>
-        {label}{" "}
-        <input
-          name={name}
-          type={type}
-          value={value}
-          onChange={handleChange /* note, bound event is here! */}
-        />
-      </div>
-    );
   };
 
   return (
-    <div>
+    <Container>
       <label>
         StrokeWidth:
-        <Field name="strokeWidth" label="strokeWidth" />
-        {/* <Input /> */}
+        <Input />
         <select
           key="strokeWidthSelect"
           defaultValue="%"
           onChange={(e) => {
-            /* updatePathAttribute({
+            updatePathAttribute({
               pathIndex,
               strokeWidthOperand: e.target.value,
-            }); */
+            });
           }}
         >
           <option value="px">px</option>
@@ -98,7 +55,7 @@ const StrokeWidth = (): JSX.Element => {
           <option value="rem">rem</option>
         </select>
       </label>
-    </div>
+    </Container>
   );
 };
 

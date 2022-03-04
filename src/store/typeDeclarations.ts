@@ -122,6 +122,7 @@ export type Path = {
   markers: Markers;
   // attr: Presentation;
   attr: PathProps;
+  title?: string;
 };
 
 export type Presentation = {

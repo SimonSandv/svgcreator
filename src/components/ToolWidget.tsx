@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useStore } from "effector-react";
 import {
-  $store,
   updateTool,
   WidgetButton,
   WidgetMenu,
@@ -34,7 +33,6 @@ import IconClose from "../svg/close.svg?component";
 import { useMousePosition } from "../hooks/UseMousePosition";
 
 const Widget = (): JSX.Element | null => {
-  const store = useStore($store);
   const selected = useStore($selectedState);
   const { show } = useStore($widgetState);
   const { pathIndex, lineIndex } = selected;

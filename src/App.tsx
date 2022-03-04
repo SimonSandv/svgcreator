@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useStore } from "effector-react";
 import { createStore, createEvent } from "effector";
 import styled from "@emotion/styled";
+import { Global, css } from "@emotion/react";
 import "./styles/App.scss";
+import "./styles/reset.scss";
 import {
   // STORE
   $store,
+  $themeState,
   // COMPONENTS
   handleAddPath,
   // PathElements,
@@ -20,46 +23,53 @@ import {
   ParamGrid,
   Output,
   PathAttributes,
-  themeColors,
   changeTheme,
   MousePosition,
   TestBlock,
   InfoBlock,
   ToolInfo,
   BottomMenu,
+  LeftMenu,
+  RightMenu,
+  TopMenu,
   LineCapSelector,
   LineJoinSelector,
   StrokeWidth,
   StrokeColor,
   FillColor,
+  getColorShades,
   // TYPES
 } from "./index";
+import SharedGradient from "./components/SharedGradient";
 import ToolWidget from "./components/ToolWidget";
+import getFont from "./styles/getFont";
+import { shadow2inner } from "./styles/styles";
 
 function App(): JSX.Element {
   console.log("app Rendered");
   useEffect(() => {
     handleAddPath($store.getState());
-    themeColors();
+    getColorShades(
+      $themeState.getState().themes[$themeState.getState().themeIndex],
+      [0.02, 0.05],
+      "both",
+      false,
+      true,
+      "hsl"
+    );
   }, []); // eslint-disable-line
   return (
     <Main className="App" key="App">
-      <TopMenu>
-        <MousePosition />
-        <ToolInfo />
-      </TopMenu>
-      <LeftMenu>
-        <ViewBoxInput />
-        <RelToggle />
-        <IndicatorSelector />
-        {/* <StrokeWidth /> */}
-        {/* <PathAttributes /> */}
-      </LeftMenu>
-      <EditorContainer>
-        <Editor />
-        <ToolWidget />
-      </EditorContainer>
-      <RightMenu></RightMenu>
+      <SharedGradient />
+      <TopMenu />
+      <LeftMenu />
+      <EditorWrapper>
+        <EditorContainer>
+          <Editor />
+          <ToolWidget />
+        </EditorContainer>
+      </EditorWrapper>
+      <RightMenu />
       <BottomMenu />
       {/* <div>
           <ViewBoxInput />
@@ -117,38 +127,18 @@ const Main = styled.div`
     "b b b";
   grid-template-rows: var(--topMenuHeight) auto var(--bottomMenuHeight);
   grid-template-columns: var(--leftMenuWidth) auto var(--rightMenuWidth);
+  ${getFont(4, 300)}
 `;
 
-const TopMenu = styled.div`
+const EditorWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: var(--color2);
   display: flex;
-  grid-area: t;
+  justify-content: center;
+  align-items: center;
+  padding: 5em;
+  ${shadow2inner}
 `;
-
-const LeftMenu = styled.div`
-  width: 100%;
-  height: 100%;
-  max-width: 300px;
-  background-color: var(--color1);
-  grid-area: l;
-  // border: 1px solid green;
-`;
-
-const RightMenu = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: var(--color1);
-  grid-area: r;
-`;
-
-/* const BottomMenu = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: var(--color1);
-  grid-area: b;
-`; */
 
 const EditorContainer = styled.div`
   width: 100%;
@@ -156,5 +146,5 @@ const EditorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  // border: 1px solid red;
 `;

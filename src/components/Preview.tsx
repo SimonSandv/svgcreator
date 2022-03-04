@@ -1,7 +1,6 @@
 import React from "react";
 import { useStore } from "effector-react";
 import { $store, $selectedState, $cursorState } from "../index";
-import { Stroke } from "../store/typeDeclarations";
 
 const Preview = (): JSX.Element => {
   const store = useStore($store);

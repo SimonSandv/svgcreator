@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 // UTILS
-export { numOnly } from "./util/utilityFunctions";
+export { numOnly, getColorShades } from "./util/utilityFunctions";
 export { range } from "./util/mathUtils";
 
 // FUNCTIONS
@@ -15,8 +15,6 @@ export { default as handleRightClick } from "./functions/handleRightClick";
 export { default as handleToolChange } from "./functions/handleToolChange";
 export { default as handlePointDrag } from "./functions/handlePointDrag";
 export { default as calculateControlPoints } from "./functions/calculateControlPoints";
-export { default as themeColors } from "./functions/themeColors";
-export { changeTheme } from "./store/themeState";
 
 export { default as line } from "./functions/line";
 export { default as move } from "./functions/move";
@@ -60,8 +58,14 @@ export { default as InfoBlock } from "./components/InfoBlock";
 export { default as TestBlock } from "./components/TestBlock";
 export { default as ToolInfo } from "./components/ToolInfo";
 export { default as BottomMenu } from "./components/BottomMenu";
+export { default as TopMenu } from "./components/TopMenu";
+export { default as LeftMenu } from "./components/LeftMenu";
+export { default as RightMenu } from "./components/RightMenu";
+export { default as Layers } from "./components/Layers";
+export { default as MenuCard } from "./components/MenuCard";
 export { default as SelectedInfo } from "./components/SelectedInfo";
 export { default as RemoveUndef } from "./components/RemoveUndef";
+export { default as ColorTest } from "./components/ColorTest";
 
 export { default as eventBinder } from "./functions/eventBinder";
 
@@ -75,6 +79,12 @@ export { $viewBoxState, setViewBoxState } from "./store/viewBoxState";
 export { $guideState, setGuideState } from "./store/guideState";
 export { $widgetState, setWidgetState } from "./store/widgetState";
 export { $toolState, setToolState, updateTool } from "./store/toolState";
+export {
+  $themeState,
+  nextTheme,
+  changeTheme,
+  addTheme,
+} from "./store/themeState";
 export {
   $cursorState,
   setCursorState,

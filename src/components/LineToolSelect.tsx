@@ -1,6 +1,5 @@
-import { useStore } from "effector-react";
 import React from "react";
-import { Line, handleSelect, $store } from "../index";
+import { Line, handleSelect } from "../index";
 import { toolArray } from "../store/toolArray";
 
 interface props {
@@ -9,7 +8,6 @@ interface props {
   lineIndex: number;
 }
 const LineToolSelect = ({ line, pathIndex, lineIndex }: props): JSX.Element => {
-  const store = useStore($store);
   const getOptions = (): JSX.Element[] => {
     const elements = [];
     for (let i = 0; i < toolArray.length; i += 1) {

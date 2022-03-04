@@ -1,3 +1,5 @@
+import convert from "color-convert";
+
 /**
  * Prevent default on non-numeric key events
  * @param event - KeyboardEvent
@@ -35,7 +37,7 @@ export const testCasing = (s: string): boolean => {
 /* eslint-disable no-param-reassign */
 export function changeColorLuminance(hex: string, lum: number): string {
   // validate hex string
-  hex.replace(/[^0-9a-f]/gi, "");
+  hex = String(hex).replace(/[^0-9a-f]/gi, "");
   if (hex.length < 6) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
@@ -46,13 +48,119 @@ export function changeColorLuminance(hex: string, lum: number): string {
   let c;
   let i;
   for (i = 0; i < 3; i += 1) {
-    c = parseInt(hex.substring(i * 2, 2), 16);
+    c = parseInt(hex.substr(i * 2, 2), 16);
     c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-    rgb += `00${c}`.substring(c.length);
+    rgb += `00${c}`.substr(c.length);
   }
   return rgb;
 }
 /* eslint-enable no-param-reassign */
+
+export const getColorShades = (
+  colors: string[],
+  difference: number[],
+  shades: "shadow" | "highlight" | "both" = "both",
+  additive: boolean = true,
+  setToCSSVar: boolean = false,
+  type: "hex" | "hsl" | "rgb" = "hex",
+  node: HTMLElement = document.documentElement
+): {
+  base: string;
+  darker?: string[];
+  lighter?: string[];
+}[] => {
+  const result: { base: string; darker?: string[]; lighter?: string[] }[] = [];
+  for (let i = 0; i < colors.length; i += 1) {
+    const darker: string[] = [];
+    const lighter: string[] = [];
+    if (setToCSSVar === true) {
+      node.style.setProperty(
+        `--color${i}`,
+        type === "rgb"
+          ? `rgb(${convert.hex.rgb(colors[i]).join(", ")})`
+          : type === "hsl"
+          ? `hsl(${convert.hex.hsl(colors[i]).join("%, ").replace("%", "")}%)`
+          : colors[i]
+      );
+    }
+    if (shades === "shadow" || shades === "both") {
+      for (let n = 0; n < difference.length; n += 1) {
+        darker.push(
+          changeColorLuminance(
+            additive === true || n === 0 ? colors[i] : darker[n - 1],
+            difference[n] * -1
+          )
+        );
+        if (setToCSSVar === true) {
+          node.style.setProperty(
+            `--color${i}D${n}`,
+            type === "rgb"
+              ? `rgb(${convert.hex.rgb(darker[darker.length - 1]).join(", ")})`
+              : type === "hsl"
+              ? `hsl(${convert.hex
+                  .hsl(darker[darker.length - 1])
+                  .join("%, ")
+                  .replace("%", "")}%)`
+              : colors[i]
+          );
+        }
+      }
+    }
+    if (shades === "highlight" || shades === "both") {
+      for (let n = 0; n < difference.length; n += 1) {
+        lighter.push(
+          changeColorLuminance(
+            additive === true || n === 0 ? colors[i] : lighter[n - 1],
+            difference[n]
+          )
+        );
+        if (setToCSSVar === true) {
+          node.style.setProperty(
+            `--color${i}L${n}`,
+            type === "rgb"
+              ? `rgb(${convert.hex
+                  .rgb(lighter[lighter.length - 1])
+                  .join(", ")})`
+              : type === "hsl"
+              ? `hsl(${convert.hex
+                  .hsl(lighter[lighter.length - 1])
+                  .join("%, ")
+                  .replace("%", "")}%)`
+              : colors[i]
+          );
+        }
+      }
+    }
+    if (type === "hsl") {
+      darker.forEach((v, x, a) => {
+        a[x] = `hsl(${convert.hex.hsl(v).join("%, ").replace("%", "")}%)`; //eslint-disable-line
+      });
+      lighter.forEach((v, x, a) => {
+        a[x] = `hsl(${convert.hex.hsl(v).join("%, ").replace("%", "")}%)`; //eslint-disable-line
+      });
+    }
+    if (type === "rgb") {
+      result[i].base = `rgb(${convert.hex.rgb(result[i].base).join(", ")})`;
+      darker.forEach((v, x, a) => {
+        a[x] = `rgb(${convert.hex.rgb(v).join(", ")})`; //eslint-disable-line
+      });
+      lighter.forEach((v, x, a) => {
+        a[x] = `rgb(${convert.hex.rgb(v).join(", ")})`; //eslint-disable-line
+      });
+    }
+    result[i] = {
+      base:
+        type === "rgb"
+          ? `rgb(${convert.hex.rgb(colors[i]).join(", ")})`
+          : type === "hsl"
+          ? `hsl(${convert.hex.hsl(colors[i]).join("%, ").replace("%", "")}%)`
+          : colors[i],
+      darker: darker.length !== 0 ? [...darker] : undefined,
+      lighter: lighter.length !== 0 ? [...lighter] : undefined,
+    };
+  }
+  return result;
+};
 
 export function getContrast(hex: string): string {
   const r = parseInt(hex.substring(1, 2), 16);

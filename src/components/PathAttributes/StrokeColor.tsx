@@ -1,18 +1,39 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $store, updatePathAttribute, updatePathProps } from "../../index";
+import styled from "@emotion/styled";
+import {
+  $selectedState,
+  $store,
+  updatePathAttribute,
+  updatePathProps,
+} from "../../index";
 import { Stroke } from "../../store/typeDeclarations";
 
-interface props {
-  pathIndex: number;
-}
-const StrokeColor = ({ pathIndex }: props): JSX.Element => {
-  const store = useStore($store);
+const StrokeColor = (): JSX.Element => {
+  const { paths } = useStore($store);
+  const { pathIndex } = useStore($selectedState);
+
+  const Container = styled.div``;
+  const Color = styled.div`
+    display: inline-block;
+    justify-self: center;
+    align-self: center;
+    height: 25px;
+    aspect-ratio: 1;
+    background-color: ${(props) => {
+      return props.color;
+    }};
+  `;
+  const Input = styled.input`
+    max-width: 75px;
+  `;
+
   return (
-    <div>
-      <label>
+    <Container>
+      <label htmlFor="input">
         StrokeColor:
-        <input
+        <Input
+          name="input"
           defaultValue="#00ff"
           onChange={(e) => {
             updatePathProps({ pathIndex, stroke: e.target.value });
@@ -23,14 +44,14 @@ const StrokeColor = ({ pathIndex }: props): JSX.Element => {
           }}
         />
       </label>
-      <div
-        style={{
-          backgroundColor: store.paths[pathIndex].attr.stroke,
-          width: "25px",
-          height: "25px",
-        }}
+      <Color
+        color={
+          paths[pathIndex] !== undefined
+            ? paths[pathIndex].attr.stroke
+            : "white"
+        }
       />
-    </div>
+    </Container>
   );
 };
 export default StrokeColor;

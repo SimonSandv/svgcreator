@@ -203,13 +203,13 @@ const StartControl = (props: Props): JSX.Element | null => {
   const { fill, stroke } = guideState.startControl.point;
   const lineCol = guideState.startControl.line.stroke;
   const [colorIn, colorInSet] = useState(
-    tool === "s" ? fill.inactive : fill.default
+    tool === "s" || tool === "t" ? fill.inactive : fill.default
   );
   const [colorOut, colorOutSet] = useState(
-    tool === "s" ? stroke.inactive : lineCol.default
+    tool === "s" || tool === "t" ? stroke.inactive : lineCol.default
   );
   const [colorLine, colorLineSet] = useState(
-    tool === "s" ? lineCol.inactive : lineCol.default
+    tool === "s" || tool === "t" ? lineCol.inactive : lineCol.default
   );
 
   if (

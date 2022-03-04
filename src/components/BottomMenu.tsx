@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Output, TestBlock, SelectedInfo, RemoveUndef } from "../index";
+import { gradientFrame } from "../styles/styles";
 
 const BottomMenu = (): JSX.Element => {
   const [current, currentSet] = useState("state");
@@ -12,17 +13,19 @@ const BottomMenu = (): JSX.Element => {
     padding-bottom: 25px;
     background-color: var(--color1);
     grid-area: b;
+    background: linear-gradient(145deg, var(--color1) 0%, var(--color2) 73%);
+    background-attachment: fixed;
   `;
   const TabBtnContainer = styled.div`
     padding-left: 25px;
-    background-color: var(--color1);
+    //background-color: var(--color1);
     border-bottom: 2px solid var(--color2);
   `;
   const ContentContainer = styled.div`
     width: 100%;
     height: 100%;
     padding-top: 0.5em;
-    background-color: var(--color1);
+    //background-color: var(--color1);
     display: relative;
   `;
   type BtnProps = {
@@ -33,7 +36,7 @@ const BottomMenu = (): JSX.Element => {
     margin-bottom: -2px;
     padding: 5px;
     border-radius: 5px 5px 0px 0px;
-    background-color: var(--color1);
+    //background-color: var(--color1);
     color: black;
     border: 2px solid var(--color2);
     border-bottom: ${(props: BtnProps) => {

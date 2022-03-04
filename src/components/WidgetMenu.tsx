@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getPointsOnCircumference } from "../util/mathUtils";
 import { ReactComponent as IconClose } from "../svg/close.svg";
-import { setSelectedState, $widgetState, setWidgetState } from "../index";
+import { setSelectedState, setWidgetState } from "../index";
 
 type Button = {
   corners: { x: number; y: number }[];

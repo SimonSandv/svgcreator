@@ -1,36 +1,45 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $store, updatePathProps } from "../../index";
+import styled from "@emotion/styled";
+import { $selectedState, $store, updatePathProps } from "../../index";
 
-interface Props {
-  pathIndex: number;
-}
-const FillColor = ({ pathIndex }: Props): JSX.Element => {
-  const store = useStore($store);
-  console.log(pathIndex);
-  // const { color } = store.paths[pathIndex].attr.fill;
+const FillColor = (): JSX.Element => {
+  const { paths } = useStore($store);
+  const { pathIndex } = useStore($selectedState);
+  const Container = styled.div``;
+  const Color = styled.div`
+    display: inline-block;
+    justify-self: center;
+    align-self: center;
+    height: 25px;
+    aspect-ratio: 1;
+    background-color: ${(props) => {
+      return props.color;
+    }};
+  `;
+  const Input = styled.input`
+    max-width: 75px;
+  `;
   return (
-    <div>
-      <label>
+    <Container>
+      <label htmlFor="input">
         FillColor:
-        <input
+        <Input
           // defaultValue="transparent"
+          name="input"
           onChange={(e) => {
             updatePathProps({ pathIndex, fill: e.target.value });
           }}
         />
       </label>
-      <div
-        style={{
-          backgroundColor:
-            store.paths[pathIndex].attr.fill !== undefined
-              ? store.paths[pathIndex].attr.fill
-              : "transparent",
-          width: "25px",
-          height: "25px",
-        }}
+      <Color
+        color={
+          paths[pathIndex] !== undefined
+            ? paths[pathIndex].attr.fill
+            : "transparent"
+        }
       />
-    </div>
+    </Container>
   );
 };
 export default FillColor;
