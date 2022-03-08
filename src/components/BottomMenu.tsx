@@ -47,9 +47,10 @@ const BottomMenu = (): JSX.Element => {
   return (
     <Container>
       <TabBtnContainer>
-        {tabArray.map((v) => {
+        {tabArray.map((v, i) => {
           return (
             <Tab
+              key={`bottomMenu-tab-${tabArray[i]}`}
               borderBtm={
                 current === v
                   ? "2px solid var(--color1)"

@@ -51,16 +51,18 @@ const ColorTest = (): JSX.Element => {
         {colors.map((color) => {
           console.log(color.lighter);
           return (
-            <Color>
+            <Color key={`Colors-${color.base}`}>
               {color.lighter
                 ?.slice(0)
                 .reverse()
-                .map((v) => {
-                  return <Shade color={v} />;
+                .map((v, i) => {
+                  return (
+                    <Shade color={v} key={`Colors-${color.lighter![i]}`} />
+                  );
                 })}
               <Shade color={color.base} />
-              {color.darker?.map((v) => {
-                return <Shade color={v} />;
+              {color.darker?.map((v, i) => {
+                return <Shade color={v} key={`Colors-${color.darker![i]}`} />;
               })}
             </Color>
           );

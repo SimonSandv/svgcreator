@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useStore, useStoreMap } from "effector-react";
 import { createEvent, createEffect, createStore, sample } from "effector";
 import styled from "@emotion/styled";
@@ -11,37 +11,40 @@ import {
 } from "../../index";
 
 const StrokeWidth = (): JSX.Element => {
-  // const [state, stateSet] = useState(0);
   const { pathIndex } = useStore($selectedState);
   const { paths } = useStore($store);
+  const [focus, focusSet] = useState<boolean>(false);
 
   const Container = styled.div``;
-  const Inputt = styled.input`
+  const Input = styled.input`
     max-width: 75px;
   `;
 
-  const Input = (): JSX.Element => {
-    return (
-      <Inputt
-        key="strokeWidthInput"
-        defaultValue={
-          paths[pathIndex] !== undefined ? paths[pathIndex].attr.strokeWidth : 1
-        }
-        onChange={(e) => {
-          updatePathProps({ pathIndex, strokeWidth: e.target.value });
-        }}
-      />
-    );
-  };
-
   return (
     <Container>
-      <label>
+      <label htmlFor="strokeWidthInput">
         StrokeWidth:
-        <Input />
+        <Input
+          name="strokeWidthInput"
+          key="strokeWidthInput"
+          value={paths[pathIndex].attr.strokeWidth}
+          onKeyPress={(e) => {
+            return numOnly(e);
+          }}
+          onChange={(e) => {
+            updatePathProps({ pathIndex, strokeWidth: e.target.value });
+          }}
+          onFocus={() => {
+            return focusSet(true);
+          }}
+          onBlur={() => {
+            return focusSet(false);
+          }}
+          autoFocus={focus}
+        />
         <select
           key="strokeWidthSelect"
-          defaultValue="%"
+          defaultValue="px"
           onChange={(e) => {
             updatePathAttribute({
               pathIndex,

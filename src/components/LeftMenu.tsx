@@ -40,7 +40,11 @@ const LeftMenu = (): JSX.Element => {
   return (
     <Container>
       {items.map((item) => {
-        return <MenuCard title={item[0]}>{item[1]}</MenuCard>;
+        return (
+          <MenuCard title={item[0]} key={`LeftMenu-${item[0]}`}>
+            {item[1]}
+          </MenuCard>
+        );
       })}
     </Container>
   );

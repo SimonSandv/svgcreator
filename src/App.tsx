@@ -44,20 +44,65 @@ import SharedGradient from "./components/SharedGradient";
 import ToolWidget from "./components/ToolWidget";
 import getFont from "./styles/getFont";
 import { shadow2inner } from "./styles/styles";
+import useBeforeRender from "./hooks/useBeforeRender";
 
+const root = document.documentElement.style;
+root.setProperty(`--topMenuHeight`, ` ${50}px`);
+root.setProperty(`--bottomMenuHeight`, ` ${200}px`);
+root.setProperty(`--leftMenuWidth`, ` ${50}px`);
+root.setProperty(`--RightMenuWidth`, ` ${50}px`);
+
+const Main = styled.div`
+  min-width: 100vw;
+  max-width: 100vw;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background-color: var(--color0);
+  display: grid;
+  grid-template-areas:
+    "t t t"
+    "l e r"
+    "b b b";
+  grid-template-rows: var(--topMenuHeight) auto var(--bottomMenuHeight);
+  grid-template-columns: var(--leftMenuWidth) auto var(--rightMenuWidth);
+  ${getFont(4, 300)}
+`;
+
+const EditorWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5em;
+  ${shadow2inner}
+`;
+
+const EditorContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // border: 1px solid red;
+`;
+
+handleAddPath($store.getState());
+getColorShades(
+  $themeState.getState().themes[$themeState.getState().themeIndex],
+  [0.02, 0.05],
+  "both",
+  false,
+  true,
+  "hsl"
+);
 function App(): JSX.Element {
   console.log("app Rendered");
-  useEffect(() => {
-    handleAddPath($store.getState());
-    getColorShades(
-      $themeState.getState().themes[$themeState.getState().themeIndex],
-      [0.02, 0.05],
-      "both",
-      false,
-      true,
-      "hsl"
-    );
-  }, []); // eslint-disable-line
+  // const store = $store.getState();
+  /* useBeforeRender(() => {}, []); */
+  /* useEffect(() => {}, []); */
   return (
     <Main className="App" key="App">
       <SharedGradient />
@@ -103,48 +148,7 @@ function App(): JSX.Element {
     </Main>
   );
 }
-
+App.whyDidYouRender = {
+  logOnDifferentValues: true,
+};
 export default App;
-
-const root = document.documentElement.style;
-root.setProperty(`--topMenuHeight`, ` ${50}px`);
-root.setProperty(`--bottomMenuHeight`, ` ${200}px`);
-root.setProperty(`--leftMenuWidth`, ` ${50}px`);
-root.setProperty(`--RightMenuWidth`, ` ${50}px`);
-
-const Main = styled.div`
-  min-width: 100vw;
-  max-width: 100vw;
-  min-height: 100vh;
-  max-height: 100vh;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  background-color: var(--color0);
-  display: grid;
-  grid-template-areas:
-    "t t t"
-    "l e r"
-    "b b b";
-  grid-template-rows: var(--topMenuHeight) auto var(--bottomMenuHeight);
-  grid-template-columns: var(--leftMenuWidth) auto var(--rightMenuWidth);
-  ${getFont(4, 300)}
-`;
-
-const EditorWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5em;
-  ${shadow2inner}
-`;
-
-const EditorContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // border: 1px solid red;
-`;

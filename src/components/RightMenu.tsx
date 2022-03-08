@@ -6,6 +6,7 @@ import {
   StrokeWidth,
   StrokeColor,
   FillColor,
+  ColorSelector,
 } from "../index";
 import { gradientFrame } from "../styles/styles";
 
@@ -29,7 +30,10 @@ const RightMenu = (): JSX.Element => {
       <MenuCard title="Attributes">
         <StrokeWidth />
         <StrokeColor />
-        <FillColor />
+        {/* <FillColor /> */}
+      </MenuCard>
+      <MenuCard title="Color">
+        <ColorSelector />
       </MenuCard>
     </Container>
   );

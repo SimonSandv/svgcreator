@@ -28,6 +28,7 @@ import {
   setPathProps,
 } from "../index";
 
+console.log("initializing store");
 //--------------------------------------------------------------
 
 /**

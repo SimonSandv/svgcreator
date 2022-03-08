@@ -2,6 +2,8 @@ import { createEvent, createStore } from "effector";
 import { RecursivePartial } from "../util/utilityTypes";
 import { removeUndefined } from "../util/utilityFunctions";
 
+console.log("initializing themeState!");
+
 export type ThemeState = {
   themeIndex: number;
   themes: string[][];

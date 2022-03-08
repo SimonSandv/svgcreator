@@ -30,7 +30,7 @@ import IconQuad from "../svg/quad.svg?component";
 import IconSQuad from "../svg/sQuad.svg?component";
 import IconClose from "../svg/close.svg?component";
  */
-import { useMousePosition } from "../hooks/UseMousePosition";
+import { useMousePosition } from "../hooks/useMousePosition";
 
 const Widget = (): JSX.Element | null => {
   const selected = useStore($selectedState);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStore } from "effector-react";
 import styled from "@emotion/styled";
 import {
@@ -12,6 +12,7 @@ import { Stroke } from "../../store/typeDeclarations";
 const StrokeColor = (): JSX.Element => {
   const { paths } = useStore($store);
   const { pathIndex } = useStore($selectedState);
+  const [focus, focusSet] = useState<boolean>(false);
 
   const Container = styled.div``;
   const Color = styled.div`
@@ -37,11 +38,14 @@ const StrokeColor = (): JSX.Element => {
           defaultValue="#00ff"
           onChange={(e) => {
             updatePathProps({ pathIndex, stroke: e.target.value });
-            /* updatePathAttribute({
-              pathIndex,
-              strokeColor: e.target.value.toString(),
-            }); */
           }}
+          onFocus={() => {
+            return focusSet(true);
+          }}
+          onBlur={() => {
+            return focusSet(false);
+          }}
+          autoFocus={focus}
         />
       </label>
       <Color

@@ -66,6 +66,7 @@ export { default as MenuCard } from "./components/MenuCard";
 export { default as SelectedInfo } from "./components/SelectedInfo";
 export { default as RemoveUndef } from "./components/RemoveUndef";
 export { default as ColorTest } from "./components/ColorTest";
+export { default as ColorSelector } from "./components/ColorSelector";
 
 export { default as eventBinder } from "./functions/eventBinder";
 

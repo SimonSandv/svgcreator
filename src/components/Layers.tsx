@@ -53,6 +53,7 @@ const Layers = (): JSX.Element => {
             onClick={() => {
               handlePathClick(pathIndex);
             }}
+            key={`Layers-Path${path.pathIndex}`}
           >
             <PathHead>
               <Title>
@@ -70,6 +71,7 @@ const Layers = (): JSX.Element => {
                       onClick={() => {
                         handleLineClick(lineIndex);
                       }}
+                      key={`Layers-Path${path.pathIndex}-Line${line.lineIndex}`}
                     >
                       {lineIndex}
                       {line.tool}
