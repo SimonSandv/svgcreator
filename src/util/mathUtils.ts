@@ -71,10 +71,17 @@ type Position = { x: number; y: number };
  * @param diameter - Maximum input value.
  * @returns `position` object containing `.x` and `.y` value.
  */
-const resolveToPoint = (degree: number, diameter: number): Position => {
+const resolveToPoint = (
+  degree: number,
+  diameter: number,
+  flip: boolean = false
+): Position => {
   const rad = (Math.PI * degree) / 180;
   const r = diameter / 2;
-  const position: Position = { x: r * Math.cos(rad), y: r * Math.sin(rad) };
+  const position: Position = {
+    x: r * (flip ? Math.sin(rad) : Math.cos(rad)),
+    y: r * (flip ? Math.cos(rad) : Math.sin(rad)),
+  };
   return position;
 };
 
@@ -133,7 +140,26 @@ const pointToDegree = (
   const radians = Math.atan2(deltaY, deltaX);
   return radians * (180 / Math.PI);
 };
+
+const AngleFromPoints = ({
+  origin,
+  from,
+  to,
+  deg,
+}: {
+  origin: { x: number; y: number };
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+  deg: boolean;
+}): number => {
+  const v1 = from;
+  const v2 = { x: to.x - origin.x, y: to.y - origin.y };
+  const rad = Math.atan2(v2.y, v2.x) - Math.atan2(v1.y, v1.x);
+  return parseInt((deg ? rad * (180 / Math.PI) : rad).toFixed(2), 10);
+};
+
 export {
+  AngleFromPoints,
   clamp,
   range,
   lerp,
@@ -144,4 +170,5 @@ export {
   pointToDegree,
   polarToCartesian,
   getPointsOnCircumference,
+  angleInRadians,
 };

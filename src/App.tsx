@@ -148,7 +148,7 @@ function App(): JSX.Element {
     </Main>
   );
 }
-App.whyDidYouRender = {
+/* App.whyDidYouRender = {
   logOnDifferentValues: true,
-};
+}; */
 export default App;

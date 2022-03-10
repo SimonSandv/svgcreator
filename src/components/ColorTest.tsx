@@ -49,7 +49,7 @@ const ColorTest = (): JSX.Element => {
       </Button>
       <Container>
         {colors.map((color) => {
-          console.log(color.lighter);
+          // console.log(color.lighter);
           return (
             <Color key={`Colors-${color.base}`}>
               {color.lighter
