@@ -9,21 +9,27 @@ import {
   $wheelState,
   setWheelState,
 } from "../../index";
-import {
-  AngleFromPoints,
-  angleInRadians,
-  pointToDegree,
-  resolveToPoint,
-  range,
-} from "../../util/mathUtils";
+import { resolveToPoint, range } from "../../util/mathUtils";
 import Clip from "./Clip";
+import Clip75 from "./Clip75";
 
-const Container = styled.div`
-  display: flex;
+const Wrapper = styled.div`
   height: 200px;
+  //flex-grow: 0;
+`;
+const Container = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  // flex-grow: 0;
+  // flex-shrink: 0;
+  // flex-basis: 0;
+  height: 200px;
+  aspect-ratio: 1;
   justify-content: center;
   align-items: center;
   padding: 1em;
+  margin: 0 auto;
 `;
 
 const Inner = styled.div(({ deg }: { deg: number }) => {
@@ -31,7 +37,7 @@ const Inner = styled.div(({ deg }: { deg: number }) => {
     position: absolute;
     justify-self: center;
     margin: 0 auto;
-    height: 28%;
+    height: 40%;
     aspect-ratio: 1;
     background-color: hsl(${deg}, 100%, 50%);
     background: linear-gradient(
@@ -53,17 +59,14 @@ const Inner = styled.div(({ deg }: { deg: number }) => {
   `;
 });
 
-const Outer = styled.div(() => {
+const Outer = styled.div(({ light, sat }: { light: number; sat: number }) => {
   return css`
-    display: flex;
-    margin: auto;
-    height: 100%;
+    //position: absolute;
+    //height: calc(100% - 2em);
+    height: 99%;
     aspect-ratio: 1;
-    border-radius: 50%;
     clip-path: url(#clip);
     overflow: visible;
-    justify-content: center;
-    align-items: center;
     background: radial-gradient(
         white 0%,
         transparent 25%,
@@ -86,36 +89,63 @@ const Outer = styled.div(() => {
         hsl(0, 100%, 50%)
       );
     /* conic-gradient(
-          from 180deg,
-          hsl(0, 100%, 50%),
-          hsl(45, 100%, 50%),
-          hsl(90, 100%, 50%),
-          hsl(135, 100%, 50%),
-          hsl(180, 100%, 50%),
-          hsl(225, 100%, 50%),
-          hsl(270, 100%, 50%),
-          hsl(315, 100%, 50%),
-          hsl(360, 100%, 50%)
-        ); */
+        from 180deg,
+        hsl(360, ${sat}%, ${light}%),
+        hsl(315, ${sat}%, ${light}%),
+        hsl(270, ${sat}%, ${light}%),
+        hsl(225, ${sat}%, ${light}%),
+        hsl(180, ${sat}%, ${light}%),
+        hsl(135, ${sat}%, ${light}%),
+        hsl(90, ${sat}%, ${light}%),
+        hsl(45, ${sat}%, ${light}%),
+        hsl(0, ${sat}%, ${light}%)
+      ); */
+    justify-self: center;
+  `;
+});
+const OuterIn = styled.div(({ light, sat }: { light: number; sat: number }) => {
+  return css`
+    position: absolute;
+    height: calc(100% - 2em);
+    aspect-ratio: 1;
+    clip-path: url(#clip);
+    overflow: visible;
+    background: conic-gradient(
+      from 180deg,
+      hsl(360, ${sat}%, ${light}%),
+      hsl(315, ${sat}%, ${light}%),
+      hsl(270, ${sat}%, ${light}%),
+      hsl(225, ${sat}%, ${light}%),
+      hsl(180, ${sat}%, ${light}%),
+      hsl(135, ${sat}%, ${light}%),
+      hsl(90, ${sat}%, ${light}%),
+      hsl(45, ${sat}%, ${light}%),
+      hsl(0, ${sat}%, ${light}%)
+    );
     justify-self: center;
   `;
 });
 
-const DotContainer = styled.svg`
+const Svg = styled.svg`
   position: absolute;
-  //border: 3px solid white;
   height: 100%;
-  aspect-ratio: 1;
-  justify-self: center;
-  align-self: center;
+  width: 100%;
 `;
-const ClickBounds = styled.circle`
-  r: 70px;
+const OuterClickBounds = styled.circle`
+  r: 50px;
   fill: transparent;
-  //stroke: white;
-  //stroke-width: 1px;
+  // stroke: white;
+  // stroke-width: 1px;
 `;
-
+const InnerClickBounds = styled.rect`
+  fill: transparent;
+  width: 40px;
+  height: 40px;
+  x: -20px;
+  y: -20px;
+  /* stroke: white;
+  stroke-width: 1px; */
+`;
 const Dot = styled.circle(
   ({ hsl, angle }: { hsl: [number, number, number]; angle: number }) => {
     return css`
@@ -123,129 +153,235 @@ const Dot = styled.circle(
       stroke: white;
       stroke-width: 1px;
       pointer-events: none;
+      r: 5px;
+    `;
+  }
+);
+const InnerDot = styled.circle(
+  ({ hsl, angle }: { hsl: [number, number, number]; angle: number }) => {
+    return css`
+      fill: ${`hsl(${angle}, ${hsl[1]}%, ${hsl[2]}%)`};
+      stroke: white;
+      stroke-width: 0.75px;
+      pointer-events: none;
+      r: 2px;
     `;
   }
 );
 
 const ColorWheel = (): JSX.Element => {
   const colorState = useStore($colorState);
-  // const { pressed, angle } = useStore($wheelState);
+  const {
+    outerPressed,
+    innerPressed,
+    angle,
+    angleMem,
+    cord,
+    pos,
+    posMem,
+    sat,
+    light,
+  } = useStore($wheelState);
   const ref = React.useRef<SVGSVGElement>(null);
-  // const mousePos = useStore($mousePos);
+  const innerRef = React.useRef<SVGRectElement>(null);
+  const outerRef = React.useRef<SVGCircleElement>(null);
+  const innerDot = React.useRef<SVGCircleElement>(null);
   const [bounds, boundsSet] = useState<DOMRect>();
-  const [mem, memSet] = useState<number>(0);
-  const [width, widthSet] = useState(200);
-  const [height, heightSet] = useState(200);
-  const [radius, radiusSet] = useState(100);
-  const [angle, angleSet] = useState(0);
-  const [pressed, pressedSet] = useState(false);
-  const [dotRadius, dotRadiusSet] = useState(5);
-  const [dotCord, dotCordSet] = useState({ x: 0, y: 52 });
-  const [mousePos, mousePosSet] = useState({ x: 0, y: 0 });
+  const [innerBounds, innerBoundsSet] = useState<DOMRect>();
+  const [mousePos, mousePosSet] = useState<{ x: number; y: number }>();
 
-  type E = React.MouseEvent<SVGCircleElement, MouseEvent>;
+  type circleEvent = React.MouseEvent<SVGCircleElement, MouseEvent>;
+  type rectEvent = React.MouseEvent<SVGRectElement, MouseEvent>;
 
   const findDegree = (x: number, y: number): number => {
     let val = (Math.atan2(x, y) / Math.PI) * 180;
-    if (val < 0) val += 360;
+    if (val < 0) {
+      val += 360;
+    }
     return val;
   };
 
   const setNewAngle = (): void => {
-    const newAngle = parseInt(
-      findDegree(mousePos.x, mousePos.y).toFixed(2),
-      10
-    );
-    angleSet(newAngle);
-    dotCordSet(resolveToPoint(newAngle, 105, true));
+    if (mousePos !== undefined) {
+      const newAngle = parseInt(
+        findDegree(mousePos.x, mousePos.y).toFixed(2),
+        10
+      );
+      setWheelState({
+        angle: newAngle,
+        cord: resolveToPoint(newAngle, 73, true),
+      });
+      setColor({
+        type: "hsl",
+        index: colorState.selected,
+        color: [
+          newAngle,
+          colorState.colors[colorState.selected].hsl[1],
+          colorState.colors[colorState.selected].hsl[2],
+        ],
+      });
+    }
   };
 
-  const handleMouseDown = (e: E): void => {
-    if (ref !== null) {
-      console.log(
-        "ref",
-        "width:",
-        ref.current?.clientWidth,
-        "height:",
-        ref.current?.clientHeight
-      );
+  const setNewPos = (e: rectEvent): void => {
+    if (innerBounds !== undefined) {
+      const newPos = {
+        x: range(0, innerBounds.width, -20, 20, e.clientX - innerBounds.left),
+        y: range(0, innerBounds.height, -20, 20, e.clientY - innerBounds.top),
+      };
+      const newL = range(-20, 20, 100, 0, newPos.y);
+      const newS = range(-20, 20, 0, 100, newPos.x);
+      setWheelState({
+        pos: newPos,
+        light: newL,
+        sat: newS,
+      });
+      setColor({
+        type: "hsl",
+        index: colorState.selected,
+        color: [colorState.colors[colorState.selected].hsl[0], newS, newL],
+      });
     }
-    pressedSet(true);
-    memSet(angle);
+  };
+
+  const handleInnerMouseDown = (e: rectEvent): void => {
+    if (innerBounds !== undefined) {
+      setWheelState({
+        innerPressed: true,
+        posMem: pos,
+      });
+      setNewPos(e);
+    }
+  };
+  const handleInnerMouseMove = (e: rectEvent): void => {
+    if (innerPressed) {
+      setNewPos(e);
+    }
+  };
+  const handleInnerMouseUp = (e: rectEvent): void => {
+    setWheelState({ innerPressed: false });
+  };
+  const handleInnerMouseLeave = (e: rectEvent): void => {
+    setWheelState({ innerPressed: false });
+    if (outerPressed === true) {
+      setWheelState({
+        pos: posMem,
+      });
+    }
+  };
+
+  const handleOuterMouseDown = (e: circleEvent): void => {
+    setWheelState({ outerPressed: true, angleMem: angle });
     setNewAngle();
   };
-  const handleMouseMove = (e: E): void => {
-    const i = 0;
-    if (pressed) {
+  const handleOuterMouseMove = (e: circleEvent): void => {
+    if (bounds !== undefined) {
+      mousePosSet({
+        x: range(0, bounds.width, -100, 100, e.clientX - bounds.left),
+        y: range(0, bounds.height, -100, 100, e.clientY - bounds.top),
+      });
+    }
+    if (outerPressed) {
       setNewAngle();
-      /* setColor({
-        type: "hsl",
-        index: i,
-        color: [
-          angle,
-          colorState.colors[i].hsl[1],
-          colorState.colors[i].hsl[2],
-        ],
-      }); */
     }
   };
-  const handleMouseUp = (e: E): void => {
-    pressedSet(false);
+  const handleOuterMouseUp = (e: circleEvent): void => {
+    setWheelState({ outerPressed: false });
   };
-  const handleMouseLeave = (e: E): void => {
-    pressedSet(false);
-    angleSet(mem);
-    dotCordSet(resolveToPoint(mem, 105, true));
+  const handleOuterMouseLeave = (e: circleEvent): void => {
+    setWheelState({ outerPressed: false });
+    if (outerPressed === true) {
+      setWheelState({
+        angle: angleMem,
+        cord: resolveToPoint(angleMem, 73, true),
+      });
+    }
   };
 
   useEffect(() => {
-    boundsSet(ref.current?.getBoundingClientRect());
+    boundsSet(outerRef.current?.getBoundingClientRect());
+    innerBoundsSet(innerRef.current?.getBoundingClientRect());
+    setWheelState({
+      cord: resolveToPoint(
+        colorState.colors[colorState.selected].hsl[0],
+        73,
+        true
+      ),
+    });
   }, []);
 
   return (
-    <Container>
-      <Clip />
-      <Inner deg={angle} />
-      <Outer />
-      <DotContainer
-        ref={ref}
-        viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
-        onMouseMove={(e) => {
-          if (bounds !== undefined) {
-            // console.log(bounds);
-            mousePosSet({
-              x: range(0, bounds.width, -100, 100, e.clientX - bounds.left),
-              y: range(0, bounds.height, -100, 100, e.clientY - bounds.top),
-            });
-            // console.log(mousePos);
-          }
-        }}
-      >
-        <ClickBounds
-          onMouseDown={(e) => {
-            handleMouseDown(e);
-          }}
-          onMouseUp={(e) => {
-            handleMouseUp(e);
-          }}
+    <Wrapper>
+      <Container>
+        <Clip />
+        <Clip75 />
+        <Inner deg={angle} />
+        <Outer light={light} sat={sat} />
+        {/* <OuterIn light={light} sat={sat} /> */}
+        <Svg
+          viewBox="-50 -50 100 100"
+          /* ref={ref}
           onMouseMove={(e) => {
-            handleMouseMove(e);
-          }}
-          onMouseLeave={(e) => {
-            handleMouseLeave(e);
-          }}
-        />
-        {bounds !== undefined ? (
-          <Dot
-            hsl={colorState.colors[colorState.selected].hsl}
-            angle={angle}
-            cx={dotCord.x}
-            cy={dotCord.y}
-            r={dotRadius}
+            if (bounds !== undefined) {
+              mousePosSet({
+                x: range(0, bounds.width, -100, 100, e.clientX - bounds.left),
+                y: range(0, bounds.height, -100, 100, e.clientY - bounds.top),
+              });
+            }
+          }} */
+        >
+          <OuterClickBounds
+            onMouseDown={(e) => {
+              handleOuterMouseDown(e);
+            }}
+            onMouseUp={(e) => {
+              handleOuterMouseUp(e);
+            }}
+            onMouseMove={(e) => {
+              handleOuterMouseMove(e);
+            }}
+            onMouseLeave={(e) => {
+              handleOuterMouseLeave(e);
+            }}
+            ref={outerRef}
           />
-        ) : null}
-      </DotContainer>
-    </Container>
+          {bounds !== undefined ? (
+            <Dot
+              hsl={colorState.colors[colorState.selected].hsl}
+              angle={angle}
+              cx={cord.x}
+              cy={cord.y}
+            />
+          ) : null}
+          <InnerClickBounds
+            ref={innerRef}
+            onMouseDown={(e) => {
+              console.log("clicked");
+              handleInnerMouseDown(e);
+            }}
+            onMouseUp={(e) => {
+              handleInnerMouseUp(e);
+            }}
+            onMouseMove={(e) => {
+              handleInnerMouseMove(e);
+            }}
+            onMouseLeave={(e) => {
+              handleInnerMouseLeave(e);
+            }}
+            pointerEvents={outerPressed ? "none" : "auto"}
+          />
+          {bounds !== undefined ? (
+            <InnerDot
+              ref={innerDot}
+              hsl={colorState.colors[colorState.selected].hsl}
+              angle={angle}
+              cx={pos.x}
+              cy={pos.y}
+            />
+          ) : null}
+        </Svg>
+      </Container>
+    </Wrapper>
   );
 };
 

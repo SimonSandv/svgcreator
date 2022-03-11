@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 import {
-  gradient1,
   shadow1,
   shadow2,
   border,
@@ -35,12 +34,18 @@ const MenuCard = ({
     justify-content: center;
     border: 2px solid transparent;
     border-radius: 10px;
-    // margin-bottom: 1em;
+    margin-bottom: 1em;
     // background-color: var(--color1);
   `;
   const Title = styled.h3`
     color: silver;
     margin-bottom: 0.5em;
+  `;
+  const ChildContainer = styled.div`
+    //border: 1px solid green;
+    position: relative;
+    display: relative;
+    // justify-content: center;
   `;
   const Border = styled.div`
     ${border}
@@ -54,7 +59,7 @@ const MenuCard = ({
       <Backdrop>
         <Card>
           <Title>{props.title}</Title>
-          {props.children}
+          <ChildContainer>{props.children}</ChildContainer>
         </Card>
       </Backdrop>
     </Container>

@@ -6,17 +6,21 @@ import { $store, $selectedState, $colorState, setColor } from "../../index";
 import ColorWheel from "./ColorWheel";
 
 const ColorSelector = (): JSX.Element => {
-  const colorState = useStore($colorState);
+  const { colors, selected } = useStore($colorState);
 
   const Container = styled.div``;
   const Input = styled.input`
     max-width: 75px;
   `;
   const ColorsContainer = styled.div``;
-  const ColorTile = styled.div`
-    width: 50px;
-    height: 50px;
-  `;
+  const ColorTile = styled.div(({ color }: { color: string }) => {
+    return css`
+      width: 50px;
+      height: 50px;
+      border: 1px solid white;
+      background-color: ${color};
+    `;
+  });
 
   return (
     <Container>
@@ -39,20 +43,27 @@ const ColorSelector = (): JSX.Element => {
           });
         }}
       /> */}
-      {`${colorState.colors[colorState.selected].hsl[0]}`}
-      <ColorsContainer></ColorsContainer>
-      <label htmlFor="hex">
-        <Input name="hex" />
-      </label>
-      <label htmlFor="hex">
-        <Input name="hex" />
-      </label>
-      <label htmlFor="hex">
-        <Input name="hex" />
-      </label>
-      <label htmlFor="hex">
-        <Input name="hex" />
-      </label>
+      <div>
+        {`${colors[selected].hsl[0]}`}
+        <ColorsContainer>
+          <ColorTile
+            color={`hsl(${colors[selected].hsl[0]}, ${colors[selected].hsl[1]}%, ${colors[selected].hsl[2]}%)`}
+          />
+          {/* <ColorTile color={colors[selected].hex} /> */}
+        </ColorsContainer>
+        <label htmlFor="hex">
+          <Input name="hex" />
+        </label>
+        <label htmlFor="hex">
+          <Input name="hex" />
+        </label>
+        <label htmlFor="hex">
+          <Input name="hex" />
+        </label>
+        <label htmlFor="hex">
+          <Input name="hex" />
+        </label>
+      </div>
     </Container>
   );
 };

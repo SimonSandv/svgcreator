@@ -158,6 +158,14 @@ const AngleFromPoints = ({
   return parseInt((deg ? rad * (180 / Math.PI) : rad).toFixed(2), 10);
 };
 
+const findDegree = (x: number, y: number): number => {
+  let val = (Math.atan2(x, y) / Math.PI) * 180;
+  if (val < 0) {
+    val += 360;
+  }
+  return val;
+};
+
 export {
   AngleFromPoints,
   clamp,
@@ -171,4 +179,5 @@ export {
   polarToCartesian,
   getPointsOnCircumference,
   angleInRadians,
+  findDegree,
 };
