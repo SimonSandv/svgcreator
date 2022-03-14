@@ -21,4 +21,4 @@ const RelToggle = (): JSX.Element => {
   );
 };
 
-export default RelToggle;
+export default React.memo(RelToggle);

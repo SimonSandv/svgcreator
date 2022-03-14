@@ -58,4 +58,4 @@ const StrokeColor = (): JSX.Element => {
     </Container>
   );
 };
-export default StrokeColor;
+export default React.memo(StrokeColor);

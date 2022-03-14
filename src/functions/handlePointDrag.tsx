@@ -6,13 +6,13 @@ import {
   calculateControlPoints,
   $store,
   $selectedState,
-  $mousePos,
+  $svgMousePos,
 } from "../index";
 
 const handlePointDrag = (): void => {
   const store = $store.getState();
   const selected = $selectedState.getState();
-  const mousePos = $mousePos.getState();
+  const mousePos = $svgMousePos.getState();
   const { paths } = store;
 
   const { point, pathIndex, lineIndex, inputIndex } = selected;

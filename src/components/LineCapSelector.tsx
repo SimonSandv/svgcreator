@@ -27,4 +27,4 @@ const LineCapSelector = ({ pathIndex }: props): JSX.Element => {
     </div>
   );
 };
-export default LineCapSelector;
+export default React.memo(LineCapSelector);

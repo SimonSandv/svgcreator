@@ -82,7 +82,7 @@ const Editor = (): JSX.Element => {
     </SVG>
   );
 };
-export default Editor;
+export default React.memo(Editor);
 
 const SVG = styled.svg`
   outline: none;

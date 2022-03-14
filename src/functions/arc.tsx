@@ -7,12 +7,12 @@ import {
   updateLineComplete,
   $selectedState,
   setSelectedState,
-  $mousePos,
+  $svgMousePos,
 } from "../index";
 
 const arc = (store: Store, preview: boolean = false): void => {
   const { pathIndex, lineIndex, inputIndex } = $selectedState.getState();
-  const mousePos = $mousePos.getState();
+  const mousePos = $svgMousePos.getState();
   // const { rel } = store.paths[pathIndex].lines[lineIndex];
 
   const startPos =

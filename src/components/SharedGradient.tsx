@@ -52,4 +52,4 @@ const SharedGradient = (): JSX.Element => {
     />
   );
 };
-export default SharedGradient;
+export default React.memo(SharedGradient);

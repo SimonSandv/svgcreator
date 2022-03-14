@@ -48,4 +48,4 @@ const LineToolSelect = ({ line, pathIndex, lineIndex }: props): JSX.Element => {
   );
 };
 
-export default LineToolSelect;
+export default React.memo(LineToolSelect);

@@ -13,7 +13,7 @@ import {
   arc,
   $selectedState,
   $viewBoxState,
-  setMousePos,
+  setSvgMousePos,
 } from "../index";
 import handlePointDrag from "./handlePointDrag";
 
@@ -45,7 +45,7 @@ const handleMouseMove = (
       tool === "h" &&
       store.paths[pathIndex].lines[lineIndex - 1] !== undefined
     ) {
-      setMousePos({
+      setSvgMousePos({
         x: Math.round(interpolatedX),
         y: store.paths[pathIndex].lines[lineIndex - 1].param.endPos.abs.y,
       });
@@ -53,12 +53,12 @@ const handleMouseMove = (
       tool === "v" &&
       store.paths[pathIndex].lines[lineIndex - 1] !== undefined
     ) {
-      setMousePos({
+      setSvgMousePos({
         x: store.paths[pathIndex].lines[lineIndex - 1].param.endPos.abs.x,
         y: Math.round(interpolatedY),
       });
     } else {
-      setMousePos({
+      setSvgMousePos({
         x: Math.round(interpolatedX),
         y: Math.round(interpolatedY),
       });

@@ -104,4 +104,4 @@ const TestBlock = (): JSX.Element => {
     </Container>
   );
 };
-export default TestBlock;
+export default React.memo(TestBlock);

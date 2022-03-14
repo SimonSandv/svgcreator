@@ -42,4 +42,4 @@ const FillColor = (): JSX.Element => {
     </Container>
   );
 };
-export default FillColor;
+export default React.memo(FillColor);

@@ -22,4 +22,4 @@ const TopMenu = (): JSX.Element => {
   );
 };
 
-export default TopMenu;
+export default React.memo(TopMenu);

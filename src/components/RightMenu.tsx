@@ -15,6 +15,7 @@ const RightMenu = (): JSX.Element => {
     min-width: 100px;
     width: 100%;
     height: 100%;
+    max-width: 300px;
     background-color: var(--color1);
     grid-area: r;
     padding: 2em;
@@ -39,4 +40,4 @@ const RightMenu = (): JSX.Element => {
   );
 };
 
-export default RightMenu;
+export default React.memo(RightMenu);

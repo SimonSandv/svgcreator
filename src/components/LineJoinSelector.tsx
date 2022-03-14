@@ -27,4 +27,4 @@ const LineJoinSelector = ({ pathIndex }: props): JSX.Element => {
     </div>
   );
 };
-export default LineJoinSelector;
+export default React.memo(LineJoinSelector);

@@ -29,4 +29,4 @@ const ToolInfo = (): JSX.Element => {
     />
   );
 };
-export default ToolInfo;
+export default React.memo(ToolInfo);

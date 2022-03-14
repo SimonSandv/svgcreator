@@ -5,13 +5,14 @@ import { css } from "@emotion/react";
 import {
   $colorState,
   setColor,
-  setSelectedColor,
+  ColorState,
   $wheelState,
   setWheelState,
 } from "../../index";
 import { resolveToPoint, range } from "../../util/mathUtils";
 import Clip from "./Clip";
 import Clip75 from "./Clip75";
+import { $mousePos } from "../../store/mousePos";
 
 const Wrapper = styled.div`
   height: 200px;
@@ -61,8 +62,6 @@ const Inner = styled.div(({ deg }: { deg: number }) => {
 
 const Outer = styled.div(({ light, sat }: { light: number; sat: number }) => {
   return css`
-    //position: absolute;
-    //height: calc(100% - 2em);
     height: 99%;
     aspect-ratio: 1;
     clip-path: url(#clip);
@@ -106,9 +105,9 @@ const Outer = styled.div(({ light, sat }: { light: number; sat: number }) => {
 const OuterIn = styled.div(({ light, sat }: { light: number; sat: number }) => {
   return css`
     position: absolute;
-    height: calc(100% - 2em);
+    height: calc(100% - 1em);
     aspect-ratio: 1;
-    clip-path: url(#clip);
+    clip-path: url(#clip75);
     overflow: visible;
     background: conic-gradient(
       from 180deg,
@@ -169,146 +168,135 @@ const InnerDot = styled.circle(
   }
 );
 
+const setNewAngle = ({
+  outerBounds,
+  colorState,
+}: {
+  outerBounds: DOMRect | undefined;
+  colorState: ColorState;
+}): void => {
+  const mousePos = $mousePos.getState();
+  if (mousePos !== undefined && outerBounds !== undefined) {
+    const newAngle = parseInt(
+      findDegree(
+        mousePos.x - (outerBounds?.left + outerBounds.width / 2),
+        mousePos.y - (outerBounds?.top + outerBounds.height / 2)
+      ).toFixed(2),
+      10
+    );
+    setWheelState({
+      angle: newAngle,
+      outerPos: resolveToPoint(newAngle, 73, true),
+    });
+    setColor({
+      type: "hsl",
+      index: colorState.selected,
+      color: [
+        newAngle,
+        colorState.colors[colorState.selected].hsl[1],
+        colorState.colors[colorState.selected].hsl[2],
+      ],
+    });
+  }
+};
+
+const setNewPos = ({
+  innerBounds,
+  colorState,
+}: {
+  innerBounds: DOMRect | undefined;
+  colorState: ColorState;
+}): void => {
+  if (innerBounds !== undefined) {
+    const mousePos = $mousePos.getState();
+    const x = range(innerBounds.left, innerBounds.right, -20, 20, mousePos.x);
+    const y = range(innerBounds.top, innerBounds.bottom, -20, 20, mousePos.y);
+    const h = colorState.colors[colorState.selected].hsl[0];
+    const s = Math.floor(range(-20, 20, 0, 100, x));
+    const l = Math.floor(range(-20, 20, 100, 0, y));
+    const hsl = [h, s, l];
+    setWheelState({
+      innerPos: {
+        x,
+        y,
+      },
+      sat: s,
+      light: l,
+    });
+    if (hsl !== colorState.colors[colorState.selected].hsl) {
+      setColor({
+        type: "hsl",
+        index: colorState.selected,
+        color: [h, s, l],
+      });
+    }
+  }
+};
+
+const findDegree = (x: number, y: number): number => {
+  let val = (Math.atan2(x, y) / Math.PI) * 180;
+  if (val < 0) {
+    val += 360;
+  }
+  return val;
+};
+
 const ColorWheel = (): JSX.Element => {
   const colorState = useStore($colorState);
-  const {
-    outerPressed,
-    innerPressed,
-    angle,
-    angleMem,
-    cord,
-    pos,
-    posMem,
-    sat,
-    light,
-  } = useStore($wheelState);
+  const { angle, outerPos, innerPos, sat, light } = useStore($wheelState);
   const ref = React.useRef<SVGSVGElement>(null);
   const innerRef = React.useRef<SVGRectElement>(null);
   const outerRef = React.useRef<SVGCircleElement>(null);
   const innerDot = React.useRef<SVGCircleElement>(null);
-  const [bounds, boundsSet] = useState<DOMRect>();
+  const [outerBounds, outerBoundsSet] = useState<DOMRect>();
   const [innerBounds, innerBoundsSet] = useState<DOMRect>();
-  const [mousePos, mousePosSet] = useState<{ x: number; y: number }>();
-
-  type circleEvent = React.MouseEvent<SVGCircleElement, MouseEvent>;
-  type rectEvent = React.MouseEvent<SVGRectElement, MouseEvent>;
-
-  const findDegree = (x: number, y: number): number => {
-    let val = (Math.atan2(x, y) / Math.PI) * 180;
-    if (val < 0) {
-      val += 360;
-    }
-    return val;
-  };
-
-  const setNewAngle = (): void => {
-    if (mousePos !== undefined) {
-      const newAngle = parseInt(
-        findDegree(mousePos.x, mousePos.y).toFixed(2),
-        10
-      );
-      setWheelState({
-        angle: newAngle,
-        cord: resolveToPoint(newAngle, 73, true),
-      });
-      setColor({
-        type: "hsl",
-        index: colorState.selected,
-        color: [
-          newAngle,
-          colorState.colors[colorState.selected].hsl[1],
-          colorState.colors[colorState.selected].hsl[2],
-        ],
-      });
-    }
-  };
-
-  const setNewPos = (e: rectEvent): void => {
-    if (innerBounds !== undefined) {
-      const newPos = {
-        x: range(0, innerBounds.width, -20, 20, e.clientX - innerBounds.left),
-        y: range(0, innerBounds.height, -20, 20, e.clientY - innerBounds.top),
-      };
-      const newL = range(-20, 20, 100, 0, newPos.y);
-      const newS = range(-20, 20, 0, 100, newPos.x);
-      setWheelState({
-        pos: newPos,
-        light: newL,
-        sat: newS,
-      });
-      setColor({
-        type: "hsl",
-        index: colorState.selected,
-        color: [colorState.colors[colorState.selected].hsl[0], newS, newL],
-      });
-    }
-  };
-
-  const handleInnerMouseDown = (e: rectEvent): void => {
-    if (innerBounds !== undefined) {
-      setWheelState({
-        innerPressed: true,
-        posMem: pos,
-      });
-      setNewPos(e);
-    }
-  };
-  const handleInnerMouseMove = (e: rectEvent): void => {
-    if (innerPressed) {
-      setNewPos(e);
-    }
-  };
-  const handleInnerMouseUp = (e: rectEvent): void => {
-    setWheelState({ innerPressed: false });
-  };
-  const handleInnerMouseLeave = (e: rectEvent): void => {
-    setWheelState({ innerPressed: false });
-    if (outerPressed === true) {
-      setWheelState({
-        pos: posMem,
-      });
-    }
-  };
-
-  const handleOuterMouseDown = (e: circleEvent): void => {
-    setWheelState({ outerPressed: true, angleMem: angle });
-    setNewAngle();
-  };
-  const handleOuterMouseMove = (e: circleEvent): void => {
-    if (bounds !== undefined) {
-      mousePosSet({
-        x: range(0, bounds.width, -100, 100, e.clientX - bounds.left),
-        y: range(0, bounds.height, -100, 100, e.clientY - bounds.top),
-      });
-    }
-    if (outerPressed) {
-      setNewAngle();
-    }
-  };
-  const handleOuterMouseUp = (e: circleEvent): void => {
-    setWheelState({ outerPressed: false });
-  };
-  const handleOuterMouseLeave = (e: circleEvent): void => {
-    setWheelState({ outerPressed: false });
-    if (outerPressed === true) {
-      setWheelState({
-        angle: angleMem,
-        cord: resolveToPoint(angleMem, 73, true),
-      });
-    }
-  };
 
   useEffect(() => {
-    boundsSet(outerRef.current?.getBoundingClientRect());
-    innerBoundsSet(innerRef.current?.getBoundingClientRect());
+    const oBounds = outerRef.current?.getBoundingClientRect();
+    const iBounds = innerRef.current?.getBoundingClientRect();
+    outerBoundsSet(oBounds);
+    innerBoundsSet(iBounds);
+  }, []);
+
+  useEffect(() => {
     setWheelState({
-      cord: resolveToPoint(
+      angle: colorState.colors[colorState.selected].hsl[0],
+      outerPos: resolveToPoint(
         colorState.colors[colorState.selected].hsl[0],
         73,
         true
       ),
     });
-  }, []);
+  }, [colorState.colors, colorState.selected]);
+
+  const handleInnerMouseMove = (): void => {
+    setNewPos({ colorState, innerBounds });
+  };
+  const handleInnerMouseUp = (): void => {
+    document.removeEventListener("mousemove", handleInnerMouseMove);
+  };
+  const handleInnerMouseDown = (): void => {
+    console.log("mouseDown");
+    setNewPos({
+      colorState,
+      innerBounds,
+    });
+
+    document.addEventListener("mousemove", handleInnerMouseMove);
+    document.addEventListener("mouseup", handleInnerMouseUp, { once: true });
+  };
+  const handleOuterMouseMove = (): void => {
+    setNewAngle({ colorState, outerBounds });
+  };
+  const handleOuterMouseUp = (): void => {
+    document.removeEventListener("mousemove", handleOuterMouseMove);
+  };
+  const handleOuterMouseDown = (): void => {
+    setWheelState({ outerPressed: true, angleMem: angle });
+    setNewAngle({ colorState, outerBounds });
+    document.addEventListener("mousemove", handleOuterMouseMove);
+    document.addEventListener("mouseup", handleOuterMouseUp, { once: true });
+  };
 
   return (
     <Wrapper>
@@ -318,65 +306,34 @@ const ColorWheel = (): JSX.Element => {
         <Inner deg={angle} />
         <Outer light={light} sat={sat} />
         {/* <OuterIn light={light} sat={sat} /> */}
-        <Svg
-          viewBox="-50 -50 100 100"
-          /* ref={ref}
-          onMouseMove={(e) => {
-            if (bounds !== undefined) {
-              mousePosSet({
-                x: range(0, bounds.width, -100, 100, e.clientX - bounds.left),
-                y: range(0, bounds.height, -100, 100, e.clientY - bounds.top),
-              });
-            }
-          }} */
-        >
+        <Svg viewBox="-50 -50 100 100">
           <OuterClickBounds
-            onMouseDown={(e) => {
-              handleOuterMouseDown(e);
-            }}
-            onMouseUp={(e) => {
-              handleOuterMouseUp(e);
-            }}
-            onMouseMove={(e) => {
-              handleOuterMouseMove(e);
-            }}
-            onMouseLeave={(e) => {
-              handleOuterMouseLeave(e);
+            onMouseDown={() => {
+              handleOuterMouseDown();
             }}
             ref={outerRef}
           />
-          {bounds !== undefined ? (
+          {outerBounds !== undefined ? (
             <Dot
-              hsl={colorState.colors[colorState.selected].hsl}
+              hsl={[angle, 100, 50]}
               angle={angle}
-              cx={cord.x}
-              cy={cord.y}
+              cx={outerPos.x}
+              cy={outerPos.y}
             />
           ) : null}
           <InnerClickBounds
             ref={innerRef}
-            onMouseDown={(e) => {
-              console.log("clicked");
-              handleInnerMouseDown(e);
+            onMouseDown={() => {
+              handleInnerMouseDown();
             }}
-            onMouseUp={(e) => {
-              handleInnerMouseUp(e);
-            }}
-            onMouseMove={(e) => {
-              handleInnerMouseMove(e);
-            }}
-            onMouseLeave={(e) => {
-              handleInnerMouseLeave(e);
-            }}
-            pointerEvents={outerPressed ? "none" : "auto"}
           />
-          {bounds !== undefined ? (
+          {outerBounds !== undefined ? (
             <InnerDot
               ref={innerDot}
               hsl={colorState.colors[colorState.selected].hsl}
               angle={angle}
-              cx={pos.x}
-              cy={pos.y}
+              cx={innerPos.x}
+              cy={innerPos.y}
             />
           ) : null}
         </Svg>
@@ -385,4 +342,4 @@ const ColorWheel = (): JSX.Element => {
   );
 };
 
-export default ColorWheel;
+export default React.memo(ColorWheel);

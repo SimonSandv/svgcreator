@@ -182,4 +182,4 @@ const ParamGrid = (): JSX.Element => {
   );
 };
 
-export default ParamGrid;
+export default React.memo(ParamGrid);

@@ -52,7 +52,7 @@ const InfoBlock = ({ items, label, className }: Props): JSX.Element => {
     </Wrapper>
   );
 };
-export default InfoBlock;
+export default React.memo(InfoBlock);
 
 const Wrapper = styled.div`
   display: flex;

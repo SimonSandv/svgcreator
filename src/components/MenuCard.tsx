@@ -66,4 +66,4 @@ const MenuCard = ({
   );
 };
 
-export default MenuCard;
+export default React.memo(MenuCard);

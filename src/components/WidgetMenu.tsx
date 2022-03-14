@@ -335,4 +335,4 @@ const WidgetMenu = ({
   },
 }; */
 
-export default WidgetMenu;
+export default React.memo(WidgetMenu);

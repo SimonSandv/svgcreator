@@ -23,4 +23,4 @@ const CursorSelector = (): JSX.Element => {
     </label>
   );
 };
-export default CursorSelector;
+export default React.memo(CursorSelector);

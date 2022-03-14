@@ -145,4 +145,4 @@ const Widget = (): JSX.Element | null => {
   ) : null;
 };
 
-export default Widget;
+export default React.memo(Widget);

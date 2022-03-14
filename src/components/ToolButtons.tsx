@@ -29,4 +29,4 @@ const ToolButtons = (): JSX.Element => {
   return <div>{createToolButtons()}</div>;
 };
 
-export default ToolButtons;
+export default React.memo(ToolButtons);

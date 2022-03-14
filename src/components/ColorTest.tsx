@@ -71,4 +71,4 @@ const ColorTest = (): JSX.Element => {
     </>
   );
 };
-export default ColorTest;
+export default React.memo(ColorTest);

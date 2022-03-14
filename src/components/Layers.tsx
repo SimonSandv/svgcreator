@@ -85,4 +85,4 @@ const Layers = (): JSX.Element => {
     </Wrapper>
   );
 };
-export default Layers;
+export default React.memo(Layers);

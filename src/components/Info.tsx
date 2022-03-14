@@ -189,4 +189,4 @@ const Info = (): JSX.Element => {
     </div>
   );
 };
-export default Info;
+export default React.memo(Info);

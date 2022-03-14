@@ -44,4 +44,4 @@ const InputField = ({ $store, name, type, label }) => {
     </div>
   );
 };
-export default InputField;
+export default React.memo(InputField);

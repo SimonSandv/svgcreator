@@ -45,6 +45,7 @@ import ToolWidget from "./components/ToolWidget";
 import getFont from "./styles/getFont";
 import { shadow2inner } from "./styles/styles";
 import useBeforeRender from "./hooks/useBeforeRender";
+import MousePos from "./components/MousePos";
 
 const root = document.documentElement.style;
 root.setProperty(`--topMenuHeight`, ` ${50}px`);
@@ -105,6 +106,7 @@ function App(): JSX.Element {
   /* useEffect(() => {}, []); */
   return (
     <Main className="App" key="App">
+      <MousePos />
       <SharedGradient />
       <TopMenu />
       <LeftMenu />

@@ -6,12 +6,12 @@ import {
   updateLineComplete,
   $selectedState,
   setSelectedState,
-  $mousePos,
+  $svgMousePos,
 } from "../index";
 
 const scurve = (store: Store, preview: boolean = false): void => {
   const { pathIndex, lineIndex, inputIndex } = $selectedState.getState();
-  const mousePos = $mousePos.getState();
+  const mousePos = $svgMousePos.getState();
   const startPos =
     store.paths[pathIndex].lines[lineIndex - 1] !== undefined
       ? store.paths[pathIndex].lines[lineIndex - 1].param.endPos.abs

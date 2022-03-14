@@ -42,4 +42,4 @@ const LineInputs = ({ pathIndex, lineIndex }: props): JSX.Element => {
   );
 };
 
-export default LineInputs;
+export default React.memo(LineInputs);

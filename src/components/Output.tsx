@@ -77,4 +77,4 @@ const Output = (): JSX.Element => {
   );
 };
 
-export default Output;
+export default React.memo(Output);

@@ -76,4 +76,4 @@ const BottomMenu = (): JSX.Element => {
   );
 };
 
-export default BottomMenu;
+export default React.memo(BottomMenu);

@@ -87,6 +87,7 @@ export {
   setColor,
   addColor,
 } from "./store/colorState";
+export type { ColorState } from "./store/colorState";
 export {
   $themeState,
   nextTheme,
@@ -100,6 +101,7 @@ export {
   toggleSnap,
 } from "./store/cursorState";
 export { $mousePos, setMousePos } from "./store/mousePos";
+export { $svgMousePos, setSvgMousePos } from "./store/svgMousePos";
 export {
   $debugState,
   setDebugState,

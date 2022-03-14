@@ -5,12 +5,12 @@ import {
   updateLineData,
   updateLineComplete,
   $selectedState,
-  $mousePos,
+  $svgMousePos,
 } from "../index";
 
 const move = (store: Store, preview: boolean = false): void => {
   const { pathIndex, lineIndex } = $selectedState.getState();
-  const mousePos = $mousePos.getState();
+  const mousePos = $svgMousePos.getState();
   const startPos =
     store.paths[pathIndex].lines[lineIndex - 1] !== undefined
       ? store.paths[pathIndex].lines[lineIndex - 1].param.endPos.abs

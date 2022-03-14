@@ -81,4 +81,4 @@ const ViewBox = (): JSX.Element => {
     </Container>
   );
 };
-export default ViewBox;
+export default React.memo(ViewBox);

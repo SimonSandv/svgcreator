@@ -89,4 +89,4 @@ const Infini = (): JSX.Element => {
   );
 };
 
-export default Infini;
+export default React.memo(Infini);

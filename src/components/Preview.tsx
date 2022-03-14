@@ -27,4 +27,4 @@ const Preview = (): JSX.Element => {
   }
   return <g />;
 };
-export default Preview;
+export default React.memo(Preview);

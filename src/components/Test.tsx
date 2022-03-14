@@ -21,4 +21,4 @@ const Test = (): JSX.Element => {
     </div>
   );
 };
-export default Test;
+export default React.memo(Test);

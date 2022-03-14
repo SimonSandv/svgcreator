@@ -42,7 +42,7 @@ const StrokeWidth = (): JSX.Element => {
           }}
           autoFocus={focus}
         />
-        <select
+        {/* <select
           key="strokeWidthSelect"
           defaultValue="px"
           onChange={(e) => {
@@ -56,10 +56,10 @@ const StrokeWidth = (): JSX.Element => {
           <option value="%">%</option>
           <option value="em">em</option>
           <option value="rem">rem</option>
-        </select>
+        </select> */}
       </label>
     </Container>
   );
 };
 
-export default StrokeWidth;
+export default React.memo(StrokeWidth);

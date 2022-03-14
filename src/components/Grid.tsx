@@ -80,4 +80,4 @@ const Grid = (): JSX.Element => {
   );
 };
 
-export default Grid;
+export default React.memo(Grid);

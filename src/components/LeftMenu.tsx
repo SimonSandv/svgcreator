@@ -20,7 +20,7 @@ const LeftMenu = (): JSX.Element => {
     width: 100%;
     height: 100%;
     padding: 2em;
-    // max-width: 300px;
+    max-width: 300px;
     grid-area: l;
     display: relative;
     overflow: hidden;
@@ -50,4 +50,4 @@ const LeftMenu = (): JSX.Element => {
   );
 };
 
-export default LeftMenu;
+export default React.memo(LeftMenu);

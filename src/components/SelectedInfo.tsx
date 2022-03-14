@@ -91,4 +91,4 @@ const SelectedInfo = (): JSX.Element => {
   );
 };
 
-export default SelectedInfo;
+export default React.memo(SelectedInfo);

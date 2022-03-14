@@ -33,4 +33,4 @@ const PathAttributes = (): JSX.Element | null => {
     </Container>
   );
 };
-export default PathAttributes;
+export default React.memo(PathAttributes);

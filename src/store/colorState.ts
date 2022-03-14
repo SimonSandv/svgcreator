@@ -46,9 +46,9 @@ const appropriateColors = (payload: SetColor): Color => {
         : (payload.color as ColorTuple),
     rgb:
       payload.type === "hex"
-        ? convert.hex.hsl(payload.color as string)
-        : payload.type === "rgb"
-        ? convert.rgb.hsl(payload.color as ColorTuple)
+        ? convert.hex.rgb(payload.color as string)
+        : payload.type === "hsl"
+        ? convert.hsl.rgb(payload.color as ColorTuple)
         : (payload.color as ColorTuple),
     opacity: payload.opacity ?? 100,
   };

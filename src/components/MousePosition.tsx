@@ -1,10 +1,9 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { InfoBlock } from "../index";
-import { $mousePos } from "../store/mousePos";
+import { InfoBlock, $svgMousePos } from "../index";
 
 const MousePosition = (): JSX.Element => {
-  const { x, y } = useStore($mousePos);
+  const { x, y } = useStore($svgMousePos);
   return (
     <InfoBlock
       label="Position"
@@ -16,4 +15,4 @@ const MousePosition = (): JSX.Element => {
     />
   );
 };
-export default MousePosition;
+export default React.memo(MousePosition);

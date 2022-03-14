@@ -114,4 +114,4 @@ const RemoveUndef = (): JSX.Element => {
   );
 };
 
-export default RemoveUndef;
+export default React.memo(RemoveUndef);

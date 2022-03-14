@@ -17,7 +17,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "eslint-plugin-tsdoc", "react-hooks"],
+  "plugins": ["react", "@typescript-eslint", "eslint-plugin-tsdoc", "react-hooks", "@emotion"],
   "rules": {
     "arrow-parens":"error",
     "arrow-body-style": ["error", "always"],
@@ -40,6 +40,11 @@
       }
     ],
     "no-shadow": "off",
+
+    "@emotion/jsx-import": "error",
+    "@emotion/no-vanilla": "error",
+    "@emotion/import-from-emotion": "error",
+    "@emotion/styled-import": "error",
     
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-inferrable-types": "off",

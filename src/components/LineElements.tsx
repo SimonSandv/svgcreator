@@ -77,4 +77,4 @@ const LineElements = ({ pathIndex }: props): JSX.Element => {
   return <div>{elementArray}</div>;
 };
 
-export default LineElements;
+export default React.memo(LineElements);
