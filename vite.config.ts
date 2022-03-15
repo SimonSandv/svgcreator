@@ -8,6 +8,11 @@ import svgrPlugin from "vite-plugin-svgr";
 export default defineConfig({
   plugins: [
     react(),
+    // react({
+    //   babel: {
+    //     plugins: ["@emotion"],
+    //   },
+    // }),
     svgrPlugin({
       svgrOptions: {
         icon: true,

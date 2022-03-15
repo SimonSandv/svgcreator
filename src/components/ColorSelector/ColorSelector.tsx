@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { useStore } from "effector-react";
+// import styled from "@emotion/styled";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { $store, $selectedState, $colorState, setColor } from "../../index";
 import ColorWheel from "./ColorWheel";
 import { setSelectedColor } from "../../store/colorState";
+import { setWheelState } from "../../store/wheelState";
 
 const ColorSelector = (): JSX.Element => {
   const { colors, selected } = useStore($colorState);
@@ -47,6 +49,26 @@ const ColorSelector = (): JSX.Element => {
     width: 100%;
     //border: 1px solid yellow;
   `;
+  const InputWrapper = styled.div(({ c }: { c: string }) => {
+    return css`
+      display: inline-block;
+      position: relative;
+      &:hover {
+        &:after {
+          position: absolute;
+          content: "${c === "hex" ? ".........." : "...."}";
+          width: 100%;
+          height: 100%;
+          letter-spacing: 2px;
+          top: 0.4em;
+          left: 0;
+          color: white;
+          pointer-events: none;
+        }
+      }
+    `;
+  });
+
   const StyledInput = styled.input`
     border: 0px solid white;
     background: transparent;
@@ -54,9 +76,15 @@ const ColorSelector = (): JSX.Element => {
     margin: 0;
     padding: 0;
     text-align: center;
-    // width: auto;
-    // size: 3;
-    //max-width: 75px;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: inherit;
+    }
+
+    width: auto;
+    size: 3;
+    max-width: 75px;
   `;
 
   type T = [number[] | string, "hsl" | "rgb" | "hex", number];
@@ -66,42 +94,70 @@ const ColorSelector = (): JSX.Element => {
         {arr.map((item) => {
           if (typeof item !== "string") {
             return (
-              <StyledInput
-                key={item[1] + item[2]}
-                value={item[0][item[2]]}
-                /* size={item[0][item[2]].toString().length} */
-                size={1}
-                onChange={(e) => {
-                  setColor({
-                    type: item[1],
-                    index: selected,
-                    color: [
-                      item[2] === 0
-                        ? e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : 0
-                        : (item[0][0] as any as number),
-                      item[2] === 1
-                        ? e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : 0
-                        : (item[0][1] as any as number),
-                      item[2] === 2
-                        ? e.target.value !== ""
-                          ? parseInt(e.target.value, 10)
-                          : 0
-                        : (item[0][2] as any as number),
-                    ],
-                  });
-                }}
-                onFocus={() => {
-                  return focusSet(item[1][item[2] as number] as Focus);
-                }}
-                onBlur={() => {
-                  return focusSet(undefined);
-                }}
-                autoFocus={focus === (item[1][item[2] as number] as Focus)}
-              />
+              <InputWrapper
+                className="inputWrapper"
+                key={`wrapper-${item[1]}${item[2]}`}
+                c={item[1]}
+              >
+                <StyledInput
+                  key={item[1] + item[2]}
+                  value={
+                    item[1] !== "hex" ? item[0][item[2]] : (item[0] as string)
+                  }
+                  size={item[1] !== "hex" ? 1 : 4}
+                  draggable="false"
+                  onChange={(e) => {
+                    let str = e.target.value;
+                    if (str.length > 3 && item[1] !== "hex") {
+                      str = str.slice(0, -1);
+                    }
+                    if (str.length > 6 && item[1] === "hex") {
+                      str = str[0] === "#" ? str.slice(1) : str.slice(0, -1);
+                    }
+                    let val = parseInt(str, 10);
+                    if (item[1] === "hsl" && item[2] === 0) {
+                      val = val > 360 ? 360 : val < 0 ? 0 : val;
+                    }
+                    if (item[1] === "hsl" && item[2] !== 0) {
+                      val = val > 100 ? 100 : val < 0 ? 0 : val;
+                    }
+                    if (item[1] === "rgb") {
+                      val = val > 255 ? 255 : val < 0 ? 0 : val;
+                    }
+                    setColor({
+                      type: item[1],
+                      index: selected,
+                      color:
+                        item[1] !== "hex"
+                          ? [
+                              item[2] === 0
+                                ? str !== ""
+                                  ? val
+                                  : 0
+                                : (item[0][0] as any as number),
+                              item[2] === 1
+                                ? str !== ""
+                                  ? val
+                                  : 0
+                                : (item[0][1] as any as number),
+                              item[2] === 2
+                                ? str !== ""
+                                  ? val
+                                  : 0
+                                : (item[0][2] as any as number),
+                            ]
+                          : str,
+                    });
+                  }}
+                  onFocus={() => {
+                    return focusSet(item[1][item[2] as number] as Focus);
+                  }}
+                  onBlur={() => {
+                    return focusSet(undefined);
+                  }}
+                  autoFocus={focus === (item[1][item[2] as number] as Focus)}
+                />
+              </InputWrapper>
             );
           }
           return item;
@@ -141,7 +197,7 @@ const ColorSelector = (): JSX.Element => {
               ")",
             ]}
           />
-          {/* <Input arr={["#", [colors[selected].hex, "hex", 0]]} /> */}
+          <Input arr={["#", [colors[selected].hex, "hex", 0]]} />
         </InputContainer>
       </div>
     </Container>

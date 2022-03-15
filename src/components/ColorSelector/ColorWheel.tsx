@@ -261,6 +261,22 @@ const ColorWheel = (): JSX.Element => {
   useEffect(() => {
     setWheelState({
       angle: colorState.colors[colorState.selected].hsl[0],
+      innerPos: {
+        x: range(
+          0,
+          100,
+          -20,
+          20,
+          colorState.colors[colorState.selected].hsl[1]
+        ),
+        y: range(
+          0,
+          100,
+          20,
+          -20,
+          colorState.colors[colorState.selected].hsl[2]
+        ),
+      },
       outerPos: resolveToPoint(
         colorState.colors[colorState.selected].hsl[0],
         73,

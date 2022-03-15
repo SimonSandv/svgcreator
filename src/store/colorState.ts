@@ -56,7 +56,13 @@ const appropriateColors = (payload: SetColor): Color => {
 
 export const $colorState = createStore<ColorState>({
   colors: [
-    { index: 0, hex: "", hsl: [0, 100, 50], rgb: [255, 0, 0], opacity: 100 },
+    {
+      index: 0,
+      hex: "FF0000",
+      hsl: [0, 100, 50],
+      rgb: [255, 0, 0],
+      opacity: 100,
+    },
   ],
   selected: 0,
 })
