@@ -6,10 +6,10 @@ import {
   $store,
   updatePathAttribute,
   updatePathProps,
-} from "../../index";
-import { Stroke } from "../../store/typeDeclarations";
+} from "index";
+import { Stroke } from "types";
 
-const StrokeColor = (): JSX.Element => {
+export const StrokeColor = React.memo((): JSX.Element => {
   const { paths } = useStore($store);
   const { pathIndex } = useStore($selectedState);
   const [focus, focusSet] = useState<boolean>(false);
@@ -57,5 +57,5 @@ const StrokeColor = (): JSX.Element => {
       />
     </Container>
   );
-};
-export default React.memo(StrokeColor);
+});
+export default StrokeColor;

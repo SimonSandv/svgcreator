@@ -1,4 +1,4 @@
-import { Path } from "../../index";
+import type { Path } from "types";
 
 //--------------------------------------------------------------
 export const setMarkers = (

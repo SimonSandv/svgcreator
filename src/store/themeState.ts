@@ -1,13 +1,6 @@
 import { createEvent, createStore } from "effector";
-import { RecursivePartial } from "../util/utilityTypes";
-import { removeUndefined } from "../util/utilityFunctions";
-
-console.log("initializing themeState!");
-
-export type ThemeState = {
-  themeIndex: number;
-  themes: string[][];
-};
+import { RecursivePartial, ThemeState, AddTheme, ChangeTheme } from "types";
+import { removeUndefined } from "index";
 
 export const setCurrentTheme = (
   themeState: ThemeState,
@@ -28,21 +21,13 @@ export const addThemeToArray = (
   return { ...themeState, themes };
 };
 
-export interface ChangeTheme {
-  themeIndex: number;
-}
 export const changeTheme = createEvent<ChangeTheme>();
 
-export interface AddTheme {
-  theme: string[];
-}
 export const addTheme = createEvent<AddTheme>();
 export const nextTheme = createEvent();
 export const setThemeState = createEvent<RecursivePartial<ThemeState>>();
-export const $themeState = createStore<ThemeState>({
-  themeIndex: 0,
-  themes: [
-    ["#485461", "#28313b", "#11171F", "#587599", "#98E191"],
+
+/*     ["#485461", "#28313b", "#11171F", "#587599", "#98E191"],
     ["#232426", "#363E40", "#666D73", "#949FA6", "#F2F2F2"],
     ["#ECF0F3", "#FFFFFF", "#355c7d", "#7ED1F2", "#292D32"],
     ["#395BBF", "#0339A6", "#7ED1F2", "#F2E205", "#F24444"],
@@ -55,7 +40,13 @@ export const $themeState = createStore<ThemeState>({
     ["#260119", "#591D4F", "#D9D052", "#BFAB49", "#F2E2C4"],
     ["#F23D91", "#49F2E1", "#84D904", "#84BF04", "#F2D8C9"],
     ["#183B59", "#9BBF63", "#F2CA52", "#F2AA6B", "#8C4D3F"],
-    ["#071526", "#F2B950", "#F2A74B", "#BF9663", "#F25244"],
+    ["#071526", "#F2B950", "#F2A74B", "#BF9663", "#F25244"], */
+
+export const $themeState = createStore<ThemeState>({
+  themeIndex: 0,
+  themes: [
+    ["#485461", "#28313b", "#11171F", "#587599", "#98E191"],
+    ["#232426", "#363E40", "#666D73", "#949FA6", "#F2F2F2"],
   ],
 })
   .on(setThemeState, (state, payload) => {

@@ -5,9 +5,9 @@ import {
   // updatePosition,
   updateLineData,
   loadPathData,
-} from "../index";
+} from "index";
 
-const handleSelect = (
+export const handleSelect = (
   event: React.ChangeEvent<HTMLSelectElement>,
   pathIndex: number,
   lineIndex: number

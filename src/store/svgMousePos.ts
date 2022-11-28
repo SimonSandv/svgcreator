@@ -1,10 +1,6 @@
 import { createEvent, createStore } from "effector";
-import { removeUndefined } from "../util/utilityFunctions";
-
-export type SvgMousePos = {
-  x: number;
-  y: number;
-};
+import { removeUndefined } from "index";
+import type { SvgMousePos } from "types";
 
 export const setSvgMousePos = createEvent<Partial<SvgMousePos>>();
 

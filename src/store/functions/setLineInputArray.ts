@@ -1,4 +1,4 @@
-import { Path, InputArray } from "../../index";
+import type { Path, InputArray } from "types";
 
 export const setLineInputArray = (
   paths: Path[],

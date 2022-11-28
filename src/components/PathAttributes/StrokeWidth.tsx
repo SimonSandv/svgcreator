@@ -8,9 +8,9 @@ import {
   updatePathAttribute,
   updatePathProps,
   $selectedState,
-} from "../../index";
+} from "index";
 
-const StrokeWidth = (): JSX.Element => {
+export const StrokeWidth = React.memo((): JSX.Element => {
   const { pathIndex } = useStore($selectedState);
   const { paths } = useStore($store);
   const [focus, focusSet] = useState<boolean>(false);
@@ -60,6 +60,6 @@ const StrokeWidth = (): JSX.Element => {
       </label>
     </Container>
   );
-};
+});
 
-export default React.memo(StrokeWidth);
+export default StrokeWidth;

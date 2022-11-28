@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
 import { $selectedState, $store } from "../index";
-import { Obj } from "../util/utilityTypes";
+import type { Obj } from "../util/utilityTypes";
 
 const Container = styled.div``;
 const Item = styled.div``;
@@ -66,7 +66,7 @@ const recursiveFlatten = (
     : [{ item, path: path.join(".") }];
 };
 
-const SelectedInfo = (): JSX.Element => {
+export const SelectedInfo = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const { pathIndex, lineIndex } = selected;
@@ -89,6 +89,6 @@ const SelectedInfo = (): JSX.Element => {
       })}
     </Wrapper>
   );
-};
+});
 
-export default React.memo(SelectedInfo);
+export default SelectedInfo;

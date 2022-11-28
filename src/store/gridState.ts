@@ -1,12 +1,7 @@
 import { createEvent, createStore } from "effector";
-import { RecursivePartial } from "../util/utilityTypes";
+import { RecursivePartial, GridState } from "types";
 import { removeUndefined } from "../util/utilityFunctions";
 
-export type GridState = {
-  display: boolean;
-  smallGrid: { display: boolean; opacity: number; color: string };
-  largeGrid: { display: boolean; opacity: number; color: string };
-};
 export const setGridState = createEvent<RecursivePartial<GridState>>();
 export const $gridState = createStore<GridState>({
   display: true,

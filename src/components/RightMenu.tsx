@@ -7,10 +7,10 @@ import {
   StrokeColor,
   FillColor,
   ColorSelector,
-} from "../index";
+} from "index";
 import { gradientFrame } from "../styles/styles";
 
-const RightMenu = (): JSX.Element => {
+export const RightMenu = React.memo((): JSX.Element => {
   const Container = styled.div`
     min-width: 100px;
     width: 100%;
@@ -38,6 +38,6 @@ const RightMenu = (): JSX.Element => {
       </MenuCard>
     </Container>
   );
-};
+});
 
-export default React.memo(RightMenu);
+export default RightMenu;

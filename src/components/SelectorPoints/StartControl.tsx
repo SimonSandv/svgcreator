@@ -1,5 +1,6 @@
 import { useStore } from "effector-react";
-import React, { useState, MouseEvent } from "react";
+import type { MouseEvent } from "react";
+import React, { useState } from "react";
 import {
   $store,
   $selectedState,
@@ -11,14 +12,14 @@ import {
   loadPathData,
   updateTool,
   setSelectedState,
-} from "../../index";
+} from "index";
 
 interface LineProps {
   pathIndex: number;
   lineIndex: number;
   stroke: string;
 }
-const StartControlLine = (props: LineProps): JSX.Element | null => {
+const StartControlLine = React.memo((props: LineProps): JSX.Element | null => {
   const store = useStore($store);
   const guideState = useStore($guideState);
   const viewBox = useStore($viewBoxState);
@@ -50,39 +51,41 @@ const StartControlLine = (props: LineProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface PointProps {
   pathIndex: number;
   lineIndex: number;
   fill: string;
 }
-const StartControlPoint = (props: PointProps): JSX.Element | null => {
-  const store = useStore($store);
-  const guideState = useStore($guideState);
-  const viewBox = useStore($viewBoxState);
-  const { pathIndex, lineIndex } = props;
-  const current = store.paths[pathIndex].lines[lineIndex];
-  const { paths } = store;
-  const { width, height } = viewBox;
-  const { startControl } = current.preview.param;
-  const r =
-    ((height / 100 + width / 100) / 2) * guideState.endControl.point.radius;
+const StartControlPoint = React.memo(
+  (props: PointProps): JSX.Element | null => {
+    const store = useStore($store);
+    const guideState = useStore($guideState);
+    const viewBox = useStore($viewBoxState);
+    const { pathIndex, lineIndex } = props;
+    const current = store.paths[pathIndex].lines[lineIndex];
+    const { paths } = store;
+    const { width, height } = viewBox;
+    const { startControl } = current.preview.param;
+    const r =
+      ((height / 100 + width / 100) / 2) * guideState.endControl.point.radius;
 
-  if (paths[pathIndex] !== undefined && startControl !== undefined) {
-    return React.createElement("circle", {
-      id: `guidePoint-${pathIndex}-${lineIndex}-startControlPoint`,
-      key: `guidePoint-${pathIndex}-${lineIndex}-startControlPoint`,
-      className: "guidePoint",
-      cx: startControl.abs.x,
-      cy: startControl.abs.y,
-      r,
-      fill: props.fill,
-      pointerEvents: "none",
-    });
+    if (paths[pathIndex] !== undefined && startControl !== undefined) {
+      return React.createElement("circle", {
+        id: `guidePoint-${pathIndex}-${lineIndex}-startControlPoint`,
+        key: `guidePoint-${pathIndex}-${lineIndex}-startControlPoint`,
+        className: "guidePoint",
+        cx: startControl.abs.x,
+        cy: startControl.abs.y,
+        r,
+        fill: props.fill,
+        pointerEvents: "none",
+      });
+    }
+    return null;
   }
-  return null;
-};
+);
 
 interface MoveProps {
   pathIndex: number;
@@ -92,7 +95,7 @@ interface MoveProps {
   colorOutSet: (arg0: string) => void;
   colorLineSet: (arg0: string) => void;
 }
-const StartControlMove = (props: MoveProps): JSX.Element | null => {
+const StartControlMove = React.memo((props: MoveProps): JSX.Element | null => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const guideState = useStore($guideState);
@@ -185,13 +188,13 @@ const StartControlMove = (props: MoveProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface Props {
   pathIndex: number;
   lineIndex: number;
 }
-const StartControl = (props: Props): JSX.Element | null => {
+export const StartControl = React.memo((props: Props): JSX.Element | null => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const guideState = useStore($guideState);
@@ -244,6 +247,6 @@ const StartControl = (props: Props): JSX.Element | null => {
     );
   }
   return null;
-};
+});
 
 export default StartControl;

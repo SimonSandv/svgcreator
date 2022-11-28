@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
 
 // UTILS
-export { numOnly, getColorShades } from "./util/utilityFunctions";
-export { range } from "./util/mathUtils";
+export * from "./util/utilityFunctions";
+export * from "./util/colorUtils";
+export * from "./util/mathUtils";
+export * from "./util/utilityTypes";
 
 // FUNCTIONS
 export { default as handleAddPath } from "./functions/handleAddPath";
@@ -75,61 +77,23 @@ export { default as Test } from "./components/Test";
 export { toolArray } from "./store/toolArray";
 
 // STORE
-export { $selectedState, setSelectedState } from "./store/selectedState";
-export { $viewBoxState, setViewBoxState } from "./store/viewBoxState";
-export { $guideState, setGuideState } from "./store/guideState";
-export { $widgetState, setWidgetState } from "./store/widgetState";
-export { $toolState, setToolState, updateTool } from "./store/toolState";
-export { $wheelState, setWheelState } from "./store/wheelState";
-export {
-  $colorState,
-  setSelectedColor,
-  setColor,
-  addColor,
-} from "./store/colorState";
-export type { ColorState } from "./store/colorState";
-export {
-  $themeState,
-  nextTheme,
-  changeTheme,
-  addTheme,
-} from "./store/themeState";
-export {
-  $cursorState,
-  setCursorState,
-  setHover,
-  toggleSnap,
-} from "./store/cursorState";
-export { $mousePos, setMousePos } from "./store/mousePos";
-export { $svgMousePos, setSvgMousePos } from "./store/svgMousePos";
-export {
-  $debugState,
-  setDebugState,
-  updateDebugPoint,
-} from "./store/debugState";
-export {
-  $store,
-  addLine,
-  updateInput,
-  updateInputArray,
-  updateNumberOfInputs,
-  updateLineTool,
-  updateLineComplete,
-  loadPathData,
-  updateRel,
-  updateMousePos,
-  toggleActive,
-  updatePosition,
-  updatePreviewStage,
-  updateLineParam,
-  updateLineData,
-  updatePathAttribute,
-  updatePathProps,
-  resetLinePreview,
-} from "./store/store";
+export * from "./store/selectedState";
+export * from "./store/viewBoxState";
+export * from "./store/guideState";
+export * from "./store/widgetState";
+export * from "./store/toolState";
+export * from "./store/wheelState";
+export * from "./store/colorState";
+export * from "./store/themeState";
+export * from "./store/cursorState";
+export * from "./store/mousePos";
+export * from "./store/svgMousePos";
+export * from "./store/debugState";
+export * from "./store/store";
 
 // TYPES
 export type { Store } from "./store/store";
+export type { ColorState } from "./store/colorState";
 export type {
   Path,
   Line,

@@ -6,7 +6,7 @@ import {
   // toggleActive,
   setSelectedState,
   $selectedState,
-} from "../index";
+} from "index";
 
 interface props {
   store: Store;
@@ -14,7 +14,7 @@ interface props {
   keyboardEvent?: KeyboardEvent<SVGSVGElement>;
 }
 
-function eventBinder({ store, mouseEvent, keyboardEvent }: props): void {
+export function eventBinder({ store, mouseEvent, keyboardEvent }: props): void {
   const selected = $selectedState.getState();
   if (arguments.length === 0) {
     throw new Error("eventBinder recieved no arguments");

@@ -1,7 +1,6 @@
-import { Store, addLine } from "../store/store";
-import { $selectedState, setSelectedState, updateTool } from "../index";
+import { $selectedState, setSelectedState, updateTool, Store, addLine } from "index";
 
-const handleAddLine = (store: Store, tool: string): void => {
+export const handleAddLine = (store: Store, tool: string): void => {
   const { pathIndex, lineIndex } = $selectedState.getState();
   const current = store.paths[pathIndex].lines[lineIndex];
   const { endPos, endControl } = current.param;

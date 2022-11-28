@@ -1,11 +1,13 @@
-import { setSelectedState, $selectedState, $toolState } from "../index";
 import {
+  setSelectedState,
+  $selectedState,
+  $toolState,
   addPath,
   addLine,
   updateInput,
   updateLineTool,
-  Store,
-} from "../store/store";
+  Store
+} from "index";
 
 const handleAddPath = (store: Store): void => {
   const { pathIndex } = $selectedState.getState();

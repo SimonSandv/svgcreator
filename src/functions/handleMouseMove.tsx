@@ -14,10 +14,10 @@ import {
   $selectedState,
   $viewBoxState,
   setSvgMousePos,
-} from "../index";
-import handlePointDrag from "./handlePointDrag";
+  handlePointDrag
+} from "index";
 
-const handleMouseMove = (
+export const handleMouseMove = (
   store: Store,
   event: React.MouseEvent<SVGSVGElement, globalThis.MouseEvent>
 ): void => {

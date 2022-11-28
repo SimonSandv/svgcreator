@@ -1,5 +1,5 @@
 import React from "react";
-import { updateInput, updateLineData, loadPathData } from "../index";
+import { updateInput, updateLineData, loadPathData } from "index";
 
 const handleInput = (
   event: React.ChangeEvent<HTMLInputElement>,

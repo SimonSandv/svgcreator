@@ -1,4 +1,5 @@
-import { Tool, toolArray } from "../../index";
+import { toolArray } from "index";
+import type { Tool } from "types";
 
 export const setTool = (tool: string): Tool => {
   const abs = /\p{Lu}/u.test(tool);

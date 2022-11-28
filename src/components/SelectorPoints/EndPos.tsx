@@ -5,15 +5,15 @@ import {
   $selectedState,
   setSelectedState,
   $viewBoxState,
-} from "../../index";
-import { $guideState } from "../../store/guideState";
+  $guideState,
+} from "index";
 
 interface PointProps {
   pathIndex: number;
   lineIndex: number;
   fill: string;
 }
-const EndPosPoint = (props: PointProps): JSX.Element | null => {
+const EndPosPoint = React.memo((props: PointProps): JSX.Element | null => {
   const store = useStore($store);
   const guideState = useStore($guideState);
   const viewBox = useStore($viewBoxState);
@@ -35,7 +35,7 @@ const EndPosPoint = (props: PointProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface MoveProps {
   pathIndex: number;
@@ -44,7 +44,7 @@ interface MoveProps {
   colorInSet: (arg0: string) => void;
   colorOutSet: (arg0: string) => void;
 }
-const EndPosMove = (props: MoveProps): JSX.Element | null => {
+const EndPosMove = React.memo((props: MoveProps): JSX.Element | null => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const viewBox = useStore($viewBoxState);
@@ -95,13 +95,13 @@ const EndPosMove = (props: MoveProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface Props {
   pathIndex: number;
   lineIndex: number;
 }
-const EndPos = (props: Props): JSX.Element | null => {
+export const EndPos = React.memo((props: Props): JSX.Element | null => {
   const { pathIndex, lineIndex } = props;
   const guideState = useStore($guideState);
   const { fill, stroke } = guideState.endPos.point;
@@ -121,6 +121,6 @@ const EndPos = (props: Props): JSX.Element | null => {
       <EndPosPoint pathIndex={pathIndex} lineIndex={lineIndex} fill={colorIn} />
     </g>
   );
-};
+});
 
 export default EndPos;

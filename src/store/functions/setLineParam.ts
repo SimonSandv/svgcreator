@@ -1,6 +1,6 @@
-import { CoordSet, Coord, Path } from "../../index";
+import type { CoordSet, Coord, Path } from "types";
 
-function setLineParam(
+export const setLineParam = (
   paths: Path[],
   pathIndex: number,
   lineIndex: number,
@@ -13,7 +13,7 @@ function setLineParam(
   sweepFlag?: 0 | 1 | undefined,
   preview: boolean = false,
   save: boolean = true
-): Path[] {
+): Path[] => {
   return paths.map((path, pathMapIndex) => {
     return {
       ...path,
@@ -187,6 +187,6 @@ function setLineParam(
           : path.lines,
     };
   });
-}
+};
 
 export default setLineParam;

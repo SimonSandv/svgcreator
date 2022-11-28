@@ -1,18 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useStore } from "effector-react";
-// import styled from "@emotion/styled";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { $store, $selectedState, $colorState, setColor } from "../../index";
-import ColorWheel from "./ColorWheel";
-import { setSelectedColor } from "../../store/colorState";
-import { setWheelState } from "../../store/wheelState";
+import {
+  $colorState,
+  setColor,
+  ColorWheel,
+  hslToArray,
+  getColorShades,
+} from "index";
 
-const ColorSelector = (): JSX.Element => {
+export const ColorSelector = React.memo((): JSX.Element => {
   const { colors, selected } = useStore($colorState);
   type Focus = "hex" | "h" | "s" | "l" | "r" | "g" | "b" | undefined;
   const [focus, focusSet] = useState<Focus>();
-  const hslRef = useRef<HTMLInputElement>(null);
 
   const Container = styled.div``;
 
@@ -20,16 +21,29 @@ const ColorSelector = (): JSX.Element => {
     display: flex;
     width: 100%;
     margin-top: 1em;
+    align-items: center;
     justify-content: center;
   `;
-  const ColorTile = styled.div(({ color }: { color: string }) => {
-    return css`
-      width: 50px;
-      height: 50px;
-      border: 1px solid white;
-      background-color: ${color};
-    `;
-  });
+  const ColorTile = styled.div(
+    ({
+      color,
+      size,
+    }: {
+      color: string;
+      size: number;
+      borderColor?: string;
+    }) => {
+      return css`
+        width: ${size}px;
+        height: ${size}px;
+        aspect-ratio: 1;
+        //border: 1.5px solid black;
+        border-radius: 50%;
+        margin: 0.25em;
+        background-color: ${color};
+      `;
+    }
+  );
   const InputContainer = styled.div`
     display: grid;
     grid-template-rows: repeat(1/3fr, 3);
@@ -134,28 +148,28 @@ const ColorSelector = (): JSX.Element => {
                                 ? str !== ""
                                   ? val
                                   : 0
-                                : (item[0][0] as any as number),
+                                : (item[0][0] as unknown as number),
                               item[2] === 1
                                 ? str !== ""
                                   ? val
                                   : 0
-                                : (item[0][1] as any as number),
+                                : (item[0][1] as unknown as number),
                               item[2] === 2
                                 ? str !== ""
                                   ? val
                                   : 0
-                                : (item[0][2] as any as number),
+                                : (item[0][2] as unknown as number),
                             ]
                           : str,
                     });
                   }}
                   onFocus={() => {
-                    return focusSet(item[1][item[2] as number] as Focus);
+                    return focusSet(item[1][item[2]] as Focus);
                   }}
                   onBlur={() => {
                     return focusSet(undefined);
                   }}
-                  autoFocus={focus === (item[1][item[2] as number] as Focus)}
+                  autoFocus={focus === (item[1][item[2]] as Focus)}
                 />
               </InputWrapper>
             );
@@ -165,43 +179,106 @@ const ColorSelector = (): JSX.Element => {
       </Line>
     );
   };
+
+  const Shades = (): JSX.Element => {
+    const shades = getColorShades(
+      [colors[selected].hex],
+      [0.1, 0.3, 0.5],
+      "both",
+      true,
+      false,
+      "hsl"
+    );
+    return (
+      <TileContainer>
+        {shades !== undefined
+          ? shades.map((color): JSX.Element => {
+              return (
+                <TileContainer key="TileContainer">
+                  {color.lighter
+                    ?.slice(0)
+                    .reverse()
+                    .map((v, i) => {
+                      return (
+                        <ColorTile
+                          color={v}
+                          size={20}
+                            key={`Tile-L-${color.lighter![i]}${i}`} //eslint-disable-line
+                          onClick={() => {
+                            return setColor({
+                              color: hslToArray(v),
+                              index: selected,
+                              type: "hsl",
+                            });
+                          }}
+                        />
+                      );
+                    })}
+                  <ColorTile color={color.base} size={35} />
+                  {color.darker?.map((v, i) => {
+                    return (
+                      <ColorTile
+                        color={v}
+                        size={20}
+                          key={`Tile-D-${color.darker![i]}${i}`} //eslint-disable-line
+                        onClick={() => {
+                          return setColor({
+                            color: `${v};`,
+                            index: selected,
+                            type: "hsl",
+                          });
+                        }}
+                      />
+                    );
+                  })}
+                </TileContainer>
+              );
+            })
+          : null}
+      </TileContainer>
+    );
+  };
   return (
     <Container>
       <ColorWheel />
       <div>
-        <TileContainer>
-          <ColorTile
-            color={`hsl(${colors[selected].hsl[0]}, ${colors[selected].hsl[1]}%, ${colors[selected].hsl[2]}%)`}
-          />
-        </TileContainer>
+        <Shades />
         <InputContainer>
           <Input
             arr={[
               "hsl(",
-              [colors[selected].hsl, "hsl", 0],
+              [colors[selected].hsl.array, "hsl", 0],
               ", ",
-              [colors[selected].hsl, "hsl", 1],
+              [colors[selected].hsl.array, "hsl", 1],
               "%, ",
-              [colors[selected].hsl, "hsl", 2],
+              [colors[selected].hsl.array, "hsl", 2],
               "%)",
             ]}
           />
           <Input
             arr={[
               "rgb(",
-              [colors[selected].rgb, "rgb", 0],
+              [colors[selected].rgb.array, "rgb", 0],
               ", ",
-              [colors[selected].rgb, "rgb", 1],
+              [colors[selected].rgb.array, "rgb", 1],
               ", ",
-              [colors[selected].rgb, "rgb", 2],
+              [colors[selected].rgb.array, "rgb", 2],
               ")",
             ]}
           />
           <Input arr={["#", [colors[selected].hex, "hex", 0]]} />
         </InputContainer>
+        <TileContainer>
+          <ColorTile color={colors[selected].hsl.string} size={35} />
+          <ColorTile color={colors[selected].rgb.string} size={35} />
+          <ColorTile color={`#${colors[selected].hex}`} size={35} />
+        </TileContainer>
+        <TileContainer>
+          <ColorTile color={colors[selected].hsl.string} size={35} />
+        </TileContainer>
       </div>
     </Container>
   );
-};
+});
 
-export default React.memo(ColorSelector);
+export default ColorSelector;

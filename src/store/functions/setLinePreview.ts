@@ -1,4 +1,4 @@
-import { Path } from "../../index";
+import type { Path } from "types";
 
 export const setLinePreview = (paths: Path[]): Path[] => {
   return paths.map((path) => {

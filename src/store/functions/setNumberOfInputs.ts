@@ -1,5 +1,5 @@
-import { Path } from "../../index";
-import { getInputArray } from "./getInputArray";
+import type { Path } from "types";
+import { getInputArray } from "index";
 
 export const setNumberOfInputs = (
   paths: Path[],

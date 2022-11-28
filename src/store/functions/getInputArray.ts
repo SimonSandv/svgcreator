@@ -1,4 +1,4 @@
-import { InputArray } from "../../index";
+import type { InputArray } from "types";
 
 export const getInputArray = (
   func: string,

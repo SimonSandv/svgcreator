@@ -7,39 +7,36 @@ import { Global, css } from "@emotion/react";
 import "./styles/App.scss";
 import "./styles/reset.scss";
 import {
-  // STORE
   $store,
   $themeState,
-  // COMPONENTS
   handleAddPath,
   // PathElements,
-  ToolButtons,
-  ViewBoxInput,
+  // ToolButtons,
+  // ViewBoxInput,
   Editor,
-  IndicatorSelector,
-  Test,
-  Info,
-  RelToggle,
-  ParamGrid,
-  Output,
-  PathAttributes,
-  changeTheme,
-  MousePosition,
-  TestBlock,
-  InfoBlock,
-  ToolInfo,
+  // IndicatorSelector,
+  // Test,
+  // Info,
+  // RelToggle,
+  // ParamGrid,
+  // Output,
+  // PathAttributes,
+  // changeTheme,
+  // MousePosition,
+  // TestBlock,
+  // InfoBlock,
+  // ToolInfo,
   BottomMenu,
   LeftMenu,
   RightMenu,
   TopMenu,
-  LineCapSelector,
-  LineJoinSelector,
-  StrokeWidth,
-  StrokeColor,
-  FillColor,
+  // LineCapSelector,
+  // LineJoinSelector,
+  // StrokeWidth,
+  // StrokeColor,
+  // FillColor,
   getColorShades,
-  // TYPES
-} from "./index";
+} from "index";
 import SharedGradient from "./components/SharedGradient";
 import ToolWidget from "./components/ToolWidget";
 import getFont from "./styles/getFont";
@@ -99,7 +96,7 @@ getColorShades(
   true,
   "hsl"
 );
-function App(): JSX.Element {
+const App = (): JSX.Element => {
   console.log("app Rendered");
   // const store = $store.getState();
   /* useBeforeRender(() => {}, []); */
@@ -149,7 +146,7 @@ function App(): JSX.Element {
       </button> */}
     </Main>
   );
-}
+};
 /* App.whyDidYouRender = {
   logOnDifferentValues: true,
 }; */

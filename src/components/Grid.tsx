@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
-import { $gridState } from "../store/gridState";
+import { $gridState } from "index";
 
-const Grid = (): JSX.Element => {
+export const Grid = React.memo((): JSX.Element => {
   const gridState = useStore($gridState);
 
   const LargeGrid = styled.pattern`
@@ -78,6 +78,6 @@ const Grid = (): JSX.Element => {
       <rect x="0" y="0" width="100%" height="100%" fill="url(#grid)" />
     </g>
   );
-};
+});
 
-export default React.memo(Grid);
+export default Grid;

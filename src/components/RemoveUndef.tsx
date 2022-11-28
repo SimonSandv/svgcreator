@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { createStore, createEvent } from "effector";
 import { useStore } from "effector-react";
 import { $store } from "../index";
-import { Obj } from "../util/utilityTypes";
+import type { Obj } from "../util/utilityTypes";
 
 const Container = styled.div``;
 const Item = styled.div``;
@@ -93,7 +93,7 @@ export const remove2 = (object: any): any => {
   return obj;
 };
 
-const RemoveUndef = (): JSX.Element => {
+export const RemoveUndef = React.memo((): JSX.Element => {
   const testStore = useStore($testObj);
 
   return (
@@ -112,6 +112,6 @@ const RemoveUndef = (): JSX.Element => {
       </button>
     </Wrapper>
   );
-};
+});
 
-export default React.memo(RemoveUndef);
+export default RemoveUndef;

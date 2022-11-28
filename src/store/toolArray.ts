@@ -1,4 +1,4 @@
-import type { ToolArray } from "../index";
+import type { ToolArray } from "types";
 
 export const toolArray: ToolArray = [
   {

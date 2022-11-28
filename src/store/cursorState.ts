@@ -1,6 +1,6 @@
 import { createEvent, createStore } from "effector";
-import { RecursivePartial } from "../util/utilityTypes";
-import { removeUndefined } from "../util/utilityFunctions";
+import type { RecursivePartial } from "types";
+import { removeUndefined } from "index";
 
 export type CursorState = {
   shape: "circle" | "rect";

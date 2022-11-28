@@ -1,14 +1,6 @@
 import { createStore, createEvent } from "effector";
-import { removeUndefined } from "../util/utilityFunctions";
+import { removeUndefined } from "index";
 
-export type SelectedState = {
-  mode: string;
-  pathIndex: number;
-  lineIndex: number;
-  inputIndex: number;
-  point: string;
-  drag: boolean;
-};
 export const setSelectedState = createEvent<Partial<SelectedState>>();
 export const $selectedState = createStore<SelectedState>({
   mode: "line",

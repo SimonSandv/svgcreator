@@ -1,8 +1,8 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $store, $toolState } from "../index";
+import { $store, $toolState } from "index";
 
-const ParamGrid = (): JSX.Element => {
+export const ParamGrid = React.memo((): JSX.Element => {
   const store = useStore($store);
   const { tool } = useStore($toolState);
   return (
@@ -180,6 +180,6 @@ const ParamGrid = (): JSX.Element => {
       })}
     </div>
   );
-};
+});
 
-export default React.memo(ParamGrid);
+export default ParamGrid;

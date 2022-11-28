@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const useBeforeRender = (
+export const useBeforeRender = (
   callback?: (...args: any[]) => any,
   deps?: any
 ): any => {

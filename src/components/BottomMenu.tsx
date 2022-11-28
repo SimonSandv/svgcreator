@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Output, TestBlock, SelectedInfo, RemoveUndef } from "../index";
-import { gradientFrame } from "../styles/styles";
+import { Output, TestBlock, SelectedInfo, RemoveUndef } from "index";
 
-const BottomMenu = (): JSX.Element => {
+export const BottomMenu = React.memo((): JSX.Element => {
   const [current, currentSet] = useState("state");
 
   const Container = styled.div`
@@ -74,6 +73,6 @@ const BottomMenu = (): JSX.Element => {
       </ContentContainer>
     </Container>
   );
-};
+});
 
-export default React.memo(BottomMenu);
+export default BottomMenu;

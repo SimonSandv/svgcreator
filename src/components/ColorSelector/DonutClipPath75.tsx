@@ -1,6 +1,6 @@
 import React from "react";
 
-const Clip75 = (): JSX.Element => {
+export const DonutClipPath75 = (): JSX.Element => {
   return (
     <svg
       height="0"
@@ -29,4 +29,4 @@ const Clip75 = (): JSX.Element => {
   );
 };
 
-export default Clip75;
+export default DonutClipPath75;

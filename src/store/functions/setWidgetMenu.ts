@@ -1,4 +1,4 @@
-import { WidgetMenuState } from "../../index";
+import type { WidgetMenuState } from "types";
 
 const setWidgetMenu = (
   widgetMenu: WidgetMenuState,

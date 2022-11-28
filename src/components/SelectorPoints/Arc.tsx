@@ -1,12 +1,12 @@
 import { useStore } from "effector-react";
 import React from "react";
-import { $selectedState, $store, $viewBoxState, $mousePos } from "../../index";
+import { $selectedState, $store, $viewBoxState, $mousePos } from "index";
 
 interface Props {
   pathIndex: number;
   lineIndex: number;
 }
-const Arc = (props: Props): JSX.Element | null => {
+export const Arc = React.memo((props: Props): JSX.Element | null => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const viewBox = useStore($viewBoxState);
@@ -27,7 +27,7 @@ const Arc = (props: Props): JSX.Element | null => {
   const strokeWidth =
     ((viewBox.height / 100 + viewBox.width / 100) / 2) * lineSize;
 
-  const ArcCenterPoint = (): JSX.Element | null => {
+  const ArcCenterPoint = React.memo((): JSX.Element | null => {
     if (paths[pathIndex] !== undefined) {
       return React.createElement("circle", {
         id: `guide-${pathIndex}-${lineIndex}-ArcCenter`,
@@ -39,9 +39,9 @@ const Arc = (props: Props): JSX.Element | null => {
       });
     }
     return null;
-  };
+  });
 
-  const ArcGuide = (): JSX.Element | null => {
+  const ArcGuide = React.memo((): JSX.Element | null => {
     if (paths[pathIndex] !== undefined) {
       const pointDistX = endPos.abs.x - startPos.x;
       const pointDistY = endPos.abs.y - startPos.y;
@@ -101,7 +101,7 @@ const Arc = (props: Props): JSX.Element | null => {
       );
     }
     return null;
-  };
+  });
   if (tool === "a" && inputIndex !== 0) {
     return (
       <g>
@@ -111,6 +111,6 @@ const Arc = (props: Props): JSX.Element | null => {
     );
   }
   return null;
-};
+});
 
 export default Arc;

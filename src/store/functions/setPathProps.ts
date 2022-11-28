@@ -1,5 +1,4 @@
-import { Path } from "../../index";
-import { PathProps } from "../typeDeclarations";
+import type { Path, PathProps } from "types";
 
 export function setPathProps(
   paths: Path[],

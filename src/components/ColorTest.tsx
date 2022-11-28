@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
-import { $themeState, nextTheme } from "../store/themeState";
-import { getColorShades } from "../util/utilityFunctions";
+import { $themeState, nextTheme, getColorShades } from "index";
 
-const ColorTest = (): JSX.Element => {
+export const ColorTest = React.memo((): JSX.Element => {
   const themeState = useStore($themeState);
 
   const Container = styled.div`
@@ -32,7 +31,7 @@ const ColorTest = (): JSX.Element => {
     themeState.themes[themeState.themeIndex],
     [0.1, 0.3, 0.5],
     "both",
-    true,
+    false,
     true,
     "hsl"
   );
@@ -70,5 +69,5 @@ const ColorTest = (): JSX.Element => {
       </Container>
     </>
   );
-};
-export default React.memo(ColorTest);
+});
+export default ColorTest;

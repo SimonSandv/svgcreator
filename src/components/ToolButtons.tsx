@@ -1,8 +1,8 @@
 import { useStore } from "effector-react";
 import React from "react";
-import { $selectedState, $store, updateLineTool, updateTool } from "../index";
+import { $selectedState, $store, updateLineTool, updateTool } from "index";
 
-const ToolButtons = (): JSX.Element => {
+export const ToolButtons = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
 
@@ -27,6 +27,6 @@ const ToolButtons = (): JSX.Element => {
     });
   };
   return <div>{createToolButtons()}</div>;
-};
+});
 
-export default React.memo(ToolButtons);
+export default ToolButtons;

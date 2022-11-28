@@ -7,9 +7,9 @@ import {
   $store,
   $selectedState,
   $svgMousePos,
-} from "../index";
+} from "index";
 
-const handlePointDrag = (): void => {
+export const handlePointDrag = (): void => {
   const store = $store.getState();
   const selected = $selectedState.getState();
   const mousePos = $svgMousePos.getState();

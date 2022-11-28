@@ -1,8 +1,8 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $selectedState, $store, updateTool } from "../index";
+import { $selectedState, $store, updateTool } from "index";
 
-const Test = (): JSX.Element => {
+const Test = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const { pathIndex, lineIndex } = selected;
@@ -20,5 +20,5 @@ const Test = (): JSX.Element => {
       <pre>{test}</pre>
     </div>
   );
-};
-export default React.memo(Test);
+});
+export default Test;

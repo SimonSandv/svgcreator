@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useStore } from "effector-react";
-import { $selectedState, $store } from "../index";
+import { $selectedState, $store } from "index";
 
-const Info = (): JSX.Element => {
+export const Info = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const { pathIndex, lineIndex } = selected;
@@ -17,7 +17,7 @@ const Info = (): JSX.Element => {
     }
   });
 
-  const getBtn = (obj: any): JSX.Element[] => {
+  const getBtn = React.memo((obj: any): JSX.Element[] => {
     const buttonArray: JSX.Element[] = [];
     Object.entries(obj).forEach((v) => {
       buttonArray.push(
@@ -34,7 +34,7 @@ const Info = (): JSX.Element => {
       );
     });
     return buttonArray;
-  };
+  });
   return (
     <div className="infoContainer">
       <pre>
@@ -188,5 +188,5 @@ const Info = (): JSX.Element => {
       </div>
     </div>
   );
-};
-export default React.memo(Info);
+});
+export default Info;

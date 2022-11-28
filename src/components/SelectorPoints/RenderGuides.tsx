@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useStore } from "effector-react";
-import { $store, EndPos, StartControl, EndControl, Arc } from "../../index";
+import { $store, EndPos, StartControl, EndControl, Arc } from "index";
 
-const RenderGuides = (): JSX.Element | null => {
+export const RenderGuides = React.memo((): JSX.Element | null => {
   const store = useStore($store);
   return (
     <g>
@@ -36,6 +36,6 @@ const RenderGuides = (): JSX.Element | null => {
       })}
     </g>
   );
-};
+});
 
 export default RenderGuides;

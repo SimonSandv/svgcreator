@@ -4,7 +4,7 @@
  * (Math.Sin / 180) * Math.PI
  * @param value - Value to be calculated
  */
-const sin = (value: number): number => {
+export const sin = (value: number): number => {
   return -Math.sin((value / 180) * Math.PI);
 };
 
@@ -12,7 +12,7 @@ const sin = (value: number): number => {
  * (Math.Cos / 180) * Math.PI
  * @param value - Value to be calculated
  */
-const cos = (value: number): number => {
+export const cos = (value: number): number => {
   return Math.cos((value / 180) * Math.PI);
 };
 
@@ -22,7 +22,7 @@ const cos = (value: number): number => {
  * @param min - Minimum value
  * @param max - Maximum value.
  */
-const clamp = (value: number, min = 0, max = 1): number => {
+export const clamp = (value: number, min = 0, max = 1): number => {
   return Math.min(max, Math.max(min, value));
 };
 
@@ -32,7 +32,7 @@ const clamp = (value: number, min = 0, max = 1): number => {
  * @param y - y
  * @param value - Value to be calculated
  */
-const lerp = (x: number, y: number, value: number): number => {
+export const lerp = (x: number, y: number, value: number): number => {
   return x * (1 - value) + y * value;
 };
 
@@ -42,7 +42,7 @@ const lerp = (x: number, y: number, value: number): number => {
  * @param y - y
  * @param value - Value to be calculated
  */
-const invlerp = (x: number, y: number, value: number): number => {
+export const invlerp = (x: number, y: number, value: number): number => {
   return clamp((value - x) / (y - x));
 };
 
@@ -54,7 +54,7 @@ const invlerp = (x: number, y: number, value: number): number => {
  * @param outputMax - Maximum value of output range.
  * @param input - The value to be assigned to the new range.
  */
-const range = (
+export const range = (
   inputMin: number,
   inputMax: number,
   outputMin: number,
@@ -64,28 +64,27 @@ const range = (
   return lerp(outputMin, outputMax, invlerp(inputMin, inputMax, input));
 };
 
-type Position = { x: number; y: number };
 /**
  * Resolve degree and diameter to x, y point.
  * @param degree - Minimum input value.
  * @param diameter - Maximum input value.
  * @returns `position` object containing `.x` and `.y` value.
  */
-const resolveToPoint = (
+export const resolveToPoint = (
   degree: number,
   diameter: number,
   flip: boolean = false
-): Position => {
+): {x: number, y: number} => {
   const rad = (Math.PI * degree) / 180;
   const r = diameter / 2;
-  const position: Position = {
+  const position: {x: number, y: number} = {
     x: r * (flip ? Math.sin(rad) : Math.cos(rad)),
     y: r * (flip ? Math.cos(rad) : Math.sin(rad)),
   };
   return position;
 };
 
-const polarToCartesian = (
+export const polarToCartesian = (
   centerX: number,
   centerY: number,
   radius: number,
@@ -98,11 +97,11 @@ const polarToCartesian = (
   };
 };
 
-const angleInRadians = (angleInDegrees: number): number => {
+export const angleInRadians = (angleInDegrees: number): number => {
   return (angleInDegrees - 90) * (Math.PI / 180.0);
 };
 
-const getPointsOnCircumference = (
+export const getPointsOnCircumference = (
   numPoints: number,
   totalDeg: number,
   radius: number,
@@ -129,7 +128,7 @@ const getPointsOnCircumference = (
  * @param y1 - y value of end point.
  * @returns `position` object containing `.x` and `.y` value.
  */
-const pointToDegree = (
+export const pointToDegree = (
   x: number,
   y: number,
   x1: number,
@@ -141,7 +140,7 @@ const pointToDegree = (
   return radians * (180 / Math.PI);
 };
 
-const AngleFromPoints = ({
+export const AngleFromPoints = ({
   origin,
   from,
   to,
@@ -158,26 +157,10 @@ const AngleFromPoints = ({
   return parseInt((deg ? rad * (180 / Math.PI) : rad).toFixed(2), 10);
 };
 
-const findDegree = (x: number, y: number): number => {
+export const findDegree = (x: number, y: number): number => {
   let val = (Math.atan2(x, y) / Math.PI) * 180;
   if (val < 0) {
     val += 360;
   }
   return val;
-};
-
-export {
-  AngleFromPoints,
-  clamp,
-  range,
-  lerp,
-  invlerp,
-  sin,
-  cos,
-  resolveToPoint,
-  pointToDegree,
-  polarToCartesian,
-  getPointsOnCircumference,
-  angleInRadians,
-  findDegree,
 };

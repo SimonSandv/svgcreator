@@ -8,9 +8,9 @@ import {
   $selectedState,
   setSelectedState,
   $svgMousePos,
-} from "../index";
+} from "index";
 
-const arc = (store: Store, preview: boolean = false): void => {
+export const arc = (store: Store, preview: boolean = false): void => {
   const { pathIndex, lineIndex, inputIndex } = $selectedState.getState();
   const mousePos = $svgMousePos.getState();
   // const { rel } = store.paths[pathIndex].lines[lineIndex];

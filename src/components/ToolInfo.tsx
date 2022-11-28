@@ -1,8 +1,8 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $selectedState, $store, $toolState, InfoBlock } from "../index";
+import { $selectedState, $store, $toolState, InfoBlock } from "index";
 
-const ToolInfo = (): JSX.Element => {
+const ToolInfo = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const { tool } = useStore($toolState);
@@ -28,5 +28,5 @@ const ToolInfo = (): JSX.Element => {
       ]}
     />
   );
-};
-export default React.memo(ToolInfo);
+});
+export default ToolInfo;

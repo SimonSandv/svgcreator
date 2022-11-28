@@ -1,9 +1,8 @@
 import React from "react";
-import { setCursorState } from "../index";
+import { setCursorState } from "index";
+import type { Shape } from "types";
 
-type Shape = "circle" | "rect";
-
-const CursorSelector = (): JSX.Element => {
+export const CursorSelector = React.memo((): JSX.Element => {
   // const store = useStore($store);
   return (
     <label htmlFor="CursorSelector">
@@ -22,5 +21,5 @@ const CursorSelector = (): JSX.Element => {
       </select>
     </label>
   );
-};
-export default React.memo(CursorSelector);
+});
+export default CursorSelector;

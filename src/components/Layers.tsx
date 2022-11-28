@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useStore } from "effector-react";
-import { $store } from "../index";
+import { $store } from "index";
 
-const Layers = (): JSX.Element => {
+export const Layers = React.memo((): JSX.Element => {
   const store = useStore($store);
   const Wrapper = styled.div`
     width: 100%;
@@ -84,5 +84,5 @@ const Layers = (): JSX.Element => {
       })}
     </Wrapper>
   );
-};
-export default React.memo(Layers);
+});
+export default Layers;

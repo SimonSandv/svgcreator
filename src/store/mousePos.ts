@@ -1,10 +1,6 @@
 import { createEvent, createStore } from "effector";
-import { removeUndefined } from "../util/utilityFunctions";
-
-export type MousePos = {
-  x: number;
-  y: number;
-};
+import { removeUndefined } from "index";
+import type { MousePos } from "types";
 
 export const setMousePos = createEvent<Partial<MousePos>>();
 

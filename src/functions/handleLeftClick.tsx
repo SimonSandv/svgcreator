@@ -17,7 +17,7 @@ import {
   $store,
   $selectedState,
   $toolState,
-} from "../index";
+} from "index";
 
 export const handleLeftClick = (): void => {
   let store = $store.getState();

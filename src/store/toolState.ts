@@ -1,33 +1,7 @@
 import { createEvent, createStore } from "effector";
-import { RecursivePartial } from "../util/utilityTypes";
-import { removeUndefined } from "../util/utilityFunctions";
-import { toolArray } from "../index";
-
-interface ParamInfo {
-  name: string;
-  description: string;
-}
-
-interface Tool {
-  toolIndex: number;
-  short: string;
-  description: string;
-  text: string;
-  param: ParamInfo[];
-  rel: boolean;
-}
-
-export type ToolState = {
-  tool: {
-    toolIndex: number;
-    short: string;
-    description: string;
-    text: string;
-    param: ParamInfo[];
-    rel: boolean;
-  };
-  toolArray: Tool[];
-};
+import type { RecursivePartial, Tool, ToolState } from "types";
+import { ParamInfo } from "types";
+import { toolArray, removeUndefined } from "index";
 
 export const setToolState = createEvent<RecursivePartial<ToolState>>();
 export const updateTool = createEvent<{ tool: string }>();

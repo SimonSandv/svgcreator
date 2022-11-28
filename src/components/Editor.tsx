@@ -5,16 +5,16 @@ import {
   $store,
   handleMouseMove,
   Grid,
-  PointIndicators,
+  //PointIndicators,
   Preview,
   eventBinder,
   RenderGuides,
   setHover,
   $selectedState,
   $viewBoxState,
-} from "../index";
+} from "index";
 
-const Editor = (): JSX.Element => {
+export const Editor = React.memo((): JSX.Element => {
   const store = useStore($store);
   const { mode } = useStore($selectedState);
   const viewBoxState = useStore($viewBoxState);
@@ -24,6 +24,15 @@ const Editor = (): JSX.Element => {
     viewBoxState.width.toString(),
     viewBoxState.height.toString(),
   ].join(" ");
+
+  const SVG = styled.svg`
+  outline: none;
+  margin: 0;
+  transition-property: none;
+`;
+
+  const Path = styled.path``;
+  
   return (
     <SVG
       id="editor"
@@ -63,7 +72,7 @@ const Editor = (): JSX.Element => {
       {mode === "line" ? (
         <>
           <Preview />
-          <PointIndicators />
+          {/* <PointIndicators /> */}
         </>
       ) : null}
       {store.paths.map((path) => {
@@ -81,13 +90,5 @@ const Editor = (): JSX.Element => {
       <RenderGuides />
     </SVG>
   );
-};
-export default React.memo(Editor);
-
-const SVG = styled.svg`
-  outline: none;
-  margin: 0;
-  transition-property: none;
-`;
-
-const Path = styled.path``;
+});
+export default Editor;

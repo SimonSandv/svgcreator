@@ -5,7 +5,7 @@ import { $store } from "../store/store";
 
 type Obj = { [k: string]: any };
 // const TestBlock = ({ Obj }: { [k: string]: any }): JSX.Element => {
-const Inner = (): JSX.Element => {
+const Inner = React.memo((): JSX.Element => {
   const Container = styled.div`
     height: 100%;
     max-height: 100%;
@@ -88,9 +88,9 @@ const Inner = (): JSX.Element => {
       </Text>
     </Container>
   );
-};
+});
 
-const TestBlock = (): JSX.Element => {
+export const TestBlock = React.memo((): JSX.Element => {
   console.log("testBlock Rendered");
   const Container = styled.div`
     height: 100%;
@@ -103,5 +103,5 @@ const TestBlock = (): JSX.Element => {
       <Inner />
     </Container>
   );
-};
-export default React.memo(TestBlock);
+});
+export default TestBlock;

@@ -1,9 +1,9 @@
 import React from "react";
 import { useStore } from "effector-react";
 import styled from "@emotion/styled";
-import { $selectedState, $store, updatePathProps } from "../../index";
+import { $selectedState, $store, updatePathProps } from "index";
 
-const FillColor = (): JSX.Element => {
+export const FillColor = React.memo((): JSX.Element => {
   const { paths } = useStore($store);
   const { pathIndex } = useStore($selectedState);
   const Container = styled.div``;
@@ -41,5 +41,6 @@ const FillColor = (): JSX.Element => {
       />
     </Container>
   );
-};
-export default React.memo(FillColor);
+});
+
+export default FillColor;

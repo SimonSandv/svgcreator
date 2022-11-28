@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css, Global } from "@emotion/react";
 
-const SharedGradient = (): JSX.Element => {
+const SharedGradient = React.memo((): JSX.Element => {
   return (
     <Global
       styles={css`
@@ -51,5 +51,5 @@ const SharedGradient = (): JSX.Element => {
       `}
     />
   );
-};
-export default React.memo(SharedGradient);
+});
+export default SharedGradient;

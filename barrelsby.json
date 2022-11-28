@@ -1,0 +1,6 @@
+{
+  "directory": "./src",
+  "location": "top",
+  "name": "index",
+  "exclude": "/*.d.ts"
+}

@@ -1,8 +1,8 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { $store, $selectedState, $cursorState } from "../index";
+import { $store, $selectedState, $cursorState } from "index";
 
-const Preview = (): JSX.Element => {
+export const Preview = React.memo((): JSX.Element => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const { hover } = useStore($cursorState);
@@ -26,5 +26,5 @@ const Preview = (): JSX.Element => {
     }
   }
   return <g />;
-};
-export default React.memo(Preview);
+});
+export default Preview;

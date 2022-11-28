@@ -1,12 +1,20 @@
 import { useStore } from "effector-react";
 import React from "react";
 import styled from "@emotion/styled";
-import { $viewBoxState, $svgMousePos, $cursorState } from "../index";
+import { $viewBoxState, $svgMousePos, $cursorState } from "index";
 
-const Cursor = (): JSX.Element => {
+export const Cursor = React.memo((): JSX.Element => {
   const viewBox = useStore($viewBoxState);
   const { x, y } = useStore($svgMousePos);
   const { shape, snap } = useStore($cursorState);
+
+  const Rect = styled.rect`
+  fill: lightBlue;
+`;
+
+const Circle = styled.circle`
+  fill: lightBlue;
+`;
 
   const CursorRect = (): JSX.Element => {
     const width = 1;
@@ -43,13 +51,5 @@ const Cursor = (): JSX.Element => {
       )}
     </g>
   );
-};
-export default React.memo(Cursor);
-
-const Rect = styled.rect`
-  fill: lightBlue;
-`;
-
-const Circle = styled.circle`
-  fill: lightBlue;
-`;
+});
+export default Cursor;

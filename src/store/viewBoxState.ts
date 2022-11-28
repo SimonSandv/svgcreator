@@ -1,13 +1,6 @@
 import { createEvent, createStore } from "effector";
-import { RecursivePartial } from "../util/utilityTypes";
-import { removeUndefined } from "../util/utilityFunctions";
-
-export type ViewBoxState = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+import { RecursivePartial, ViewBoxState } from "types";
+import { removeUndefined } from "index";
 
 export const setViewBoxState = createEvent<RecursivePartial<ViewBoxState>>();
 

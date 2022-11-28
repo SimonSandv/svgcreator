@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { numOnly, setViewBoxState } from "../index";
+import { numOnly, setViewBoxState } from "index";
 
-const ViewBox = (): JSX.Element => {
+const ViewBox = React.memo((): JSX.Element => {
   const Container = styled.div`
     width: 100%;
   `;
@@ -80,5 +80,5 @@ const ViewBox = (): JSX.Element => {
       </Line>
     </Container>
   );
-};
-export default React.memo(ViewBox);
+});
+export default ViewBox;

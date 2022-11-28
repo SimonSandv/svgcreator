@@ -1,10 +1,12 @@
 import React from "react";
-import { updatePathProps, LineJoin } from "../index";
+import type { LineJoin } from "index";
+import { updatePathProps } from "index";
 
-interface props {
+export const LineJoinSelector = ({
+  pathIndex,
+}: {
   pathIndex: number;
-}
-const LineJoinSelector = ({ pathIndex }: props): JSX.Element => {
+}): JSX.Element => {
   return (
     <div>
       <label htmlFor={`linejoinSelector ${pathIndex}`}>
@@ -15,7 +17,7 @@ const LineJoinSelector = ({ pathIndex }: props): JSX.Element => {
           onChange={(event) => {
             return updatePathProps({
               pathIndex,
-              strokeLinejoin: event.target.value as string as LineJoin,
+              strokeLinejoin: event.target.value as LineJoin,
             });
           }}
         >

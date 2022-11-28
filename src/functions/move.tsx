@@ -6,9 +6,9 @@ import {
   updateLineComplete,
   $selectedState,
   $svgMousePos,
-} from "../index";
+} from "index";
 
-const move = (store: Store, preview: boolean = false): void => {
+export const move = (store: Store, preview: boolean = false): void => {
   const { pathIndex, lineIndex } = $selectedState.getState();
   const mousePos = $svgMousePos.getState();
   const startPos =

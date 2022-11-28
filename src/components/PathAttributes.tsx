@@ -9,10 +9,10 @@ import {
   StrokeColor,
   FillColor,
   $selectedState,
-} from "../index";
+} from "index";
 import useForm from "./PathAttributes/FormComponent";
 
-const PathAttributes = (): JSX.Element | null => {
+export const PathAttributes = React.memo((): JSX.Element | null => {
   const selected = useStore($selectedState);
   const Container = styled.div`
     width: 100%;
@@ -32,5 +32,5 @@ const PathAttributes = (): JSX.Element | null => {
       ) : null}
     </Container>
   );
-};
-export default React.memo(PathAttributes);
+});
+export default PathAttributes;

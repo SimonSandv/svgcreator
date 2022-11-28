@@ -1,4 +1,4 @@
-import { Path, Line } from "../../index";
+import type { Path, Line } from "types";
 
 export const setLineData = (
   paths: Path[],

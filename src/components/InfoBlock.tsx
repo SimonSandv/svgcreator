@@ -1,58 +1,60 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface Item {
-  label: string;
-  value: string | number | boolean;
-  className: string;
-}
-
-interface Props {
-  items: Item[];
-  label?: string;
-  className: string;
-}
-
-const InfoBlock = ({ items, label, className }: Props): JSX.Element => {
-  return (
-    <Wrapper>
-      <Container className={`infoBlock ${className}`} key="infoBlock">
-        {label !== undefined ? (
-          <Label
-            className={`infoBlock-label ${className}`}
-            key={`infoBlock-label ${className}`}
-          >
-            {label}
-          </Label>
-        ) : null}
-        <ItemWrapper>
-          {items.map((item) => {
-            return (
-              <ItemContainer
-                className="infoBlock-itemContainer"
-                key={`infoBlock-ItemContainer${item.className}`}
-              >
-                <ItemLabel
-                  className="infoBlock-itemLabel"
-                  key={`infoBlock-itemLabel ${item.className}`}
+export const InfoBlock = React.memo(
+  ({
+    items,
+    label,
+    className,
+  }: {
+    items: {
+      label: string;
+      value: string | number | boolean;
+      className: string;
+    }[];
+    label?: string;
+    className: string;
+  }): JSX.Element => {
+    return (
+      <Wrapper>
+        <Container className={`infoBlock ${className}`} key="infoBlock">
+          {label !== undefined ? (
+            <Label
+              className={`infoBlock-label ${className}`}
+              key={`infoBlock-label ${className}`}
+            >
+              {label}
+            </Label>
+          ) : null}
+          <ItemWrapper>
+            {items.map((item) => {
+              return (
+                <ItemContainer
+                  className="infoBlock-itemContainer"
+                  key={`infoBlock-ItemContainer${item.className}`}
                 >
-                  {item.label}
-                </ItemLabel>
-                <Item
-                  className={`infoBlock-item ${className}`}
-                  key={`infoBlock-item ${item.className}`}
-                >
-                  {item.value}
-                </Item>
-              </ItemContainer>
-            );
-          })}
-        </ItemWrapper>
-      </Container>
-    </Wrapper>
-  );
-};
-export default React.memo(InfoBlock);
+                  <ItemLabel
+                    className="infoBlock-itemLabel"
+                    key={`infoBlock-itemLabel ${item.className}`}
+                  >
+                    {item.label}
+                  </ItemLabel>
+                  <Item
+                    className={`infoBlock-item ${className}`}
+                    key={`infoBlock-item ${item.className}`}
+                  >
+                    {item.value}
+                  </Item>
+                </ItemContainer>
+              );
+            })}
+          </ItemWrapper>
+        </Container>
+      </Wrapper>
+    );
+  }
+);
+export default InfoBlock;
 
 const Wrapper = styled.div`
   display: flex;

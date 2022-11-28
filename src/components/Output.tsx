@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useStore } from "effector-react";
 import ReactDOMServer from "react-dom/server";
 import styled from "@emotion/styled";
-import { $store, $viewBoxState } from "../index";
+import { $store, $viewBoxState } from "index";
 
-const Output = (): JSX.Element => {
+export const Output = React.memo((): JSX.Element => {
   const [title, titleSet] = useState("");
   const store = useStore($store);
   const viewBox = useStore($viewBoxState);
@@ -25,7 +25,7 @@ const Output = (): JSX.Element => {
 
   const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(source)}`;
 
-  const Download = (): JSX.Element => {
+  const Download = React.memo((): JSX.Element => {
     const onClick = (): void => {
       const download = document.createElement("a");
       download.href = url;
@@ -51,7 +51,7 @@ const Output = (): JSX.Element => {
         </DownloadBtn>
       </DownloadBtnContainer>
     );
-  };
+  });
   const Container = styled.div`
     height: var(--outputHeight);
     max-height: var(--outputHeight);
@@ -75,6 +75,6 @@ const Output = (): JSX.Element => {
       </CodeContainer>
     </Container>
   );
-};
+});
 
-export default React.memo(Output);
+export default Output;

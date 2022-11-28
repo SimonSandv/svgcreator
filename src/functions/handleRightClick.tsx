@@ -4,7 +4,7 @@ import {
   setSelectedState,
   $widgetState,
   setWidgetState,
-} from "../index";
+} from "index";
 
 export const handleRightClick =
   (): // event: React.MouseEvent<SVGSVGElement, globalThis.MouseEvent>

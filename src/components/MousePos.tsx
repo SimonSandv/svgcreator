@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-import { useMousePosition } from "../hooks/useMousePosition";
-import { setMousePos } from "../store/mousePos";
+import { setMousePos, useMousePosition } from "index";
 
-const MousePos = (): JSX.Element => {
+export const MousePos = React.memo((): JSX.Element => {
   const pos = useMousePosition({ mode: "client" });
   useEffect(() => {
     setMousePos(pos);
   });
   return <></>;
-};
+});
 
-export default React.memo(MousePos);
+export default MousePos;

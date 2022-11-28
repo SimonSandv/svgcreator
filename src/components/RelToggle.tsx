@@ -1,7 +1,7 @@
 import React from "react";
-import { updateRel, loadPathData, updateLineData } from "../index";
+import { updateRel, loadPathData, updateLineData } from "index";
 
-const RelToggle = (): JSX.Element => {
+export const RelToggle = React.memo((): JSX.Element => {
   return (
     <div>
       <label>
@@ -19,6 +19,6 @@ const RelToggle = (): JSX.Element => {
       </label>
     </div>
   );
-};
+});
 
-export default React.memo(RelToggle);
+export default RelToggle;

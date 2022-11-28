@@ -1,6 +1,6 @@
 import React from "react";
 
-const Clip = (): JSX.Element => {
+export const DonutClipPath = (): JSX.Element => {
   return (
     <svg height="0" width="0" className="clip" style={{ position: "absolute" }}>
       <defs>
@@ -24,4 +24,4 @@ const Clip = (): JSX.Element => {
   );
 };
 
-export default Clip;
+export default DonutClipPath;

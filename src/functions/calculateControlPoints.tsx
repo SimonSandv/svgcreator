@@ -1,6 +1,6 @@
-import { $store, updateLineParam } from "../index";
+import { $store, updateLineParam } from "index";
 
-const calculateControlPoints = (pathIndex: number): void => {
+export const calculateControlPoints = (pathIndex: number): void => {
   const store = $store.getState();
   for (let i = 0; i < store.paths[pathIndex].lines.length - 1; i += 1) {
     if (i !== 0) {

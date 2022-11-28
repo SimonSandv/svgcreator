@@ -10,12 +10,12 @@ import {
   $store,
   LineInputs,
   $toolState,
-} from "../index";
+} from "index";
 
 interface props {
   pathIndex: number;
 }
-const LineElements = ({ pathIndex }: props): JSX.Element => {
+export const LineElements = React.memo(({ pathIndex }: props): JSX.Element => {
   const store = useStore($store);
   const { tool } = useStore($toolState);
   const elementArray = store.paths[pathIndex].lines.map((line, lineIndex) => {
@@ -75,6 +75,6 @@ const LineElements = ({ pathIndex }: props): JSX.Element => {
     );
   });
   return <div>{elementArray}</div>;
-};
+});
 
-export default React.memo(LineElements);
+export default LineElements;

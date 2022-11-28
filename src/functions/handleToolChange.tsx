@@ -6,9 +6,9 @@ import {
   updateLineTool,
   // loadPathData,
   $selectedState,
-} from "../index";
+} from "index";
 
-const handleToolChange = (store: Store, tool: string): void => {
+export const handleToolChange = (store: Store, tool: string): void => {
   const { pathIndex, lineIndex } = $selectedState.getState();
   updateTool({ tool });
   updateLineTool({

@@ -1,55 +1,42 @@
 import { createEvent, createStore } from "effector";
 import convert from "color-convert";
-
-type Color = {
-  index: number;
-  hex: string;
-  hsl: [number, number, number];
-  rgb: [number, number, number];
-  opacity: number;
-};
-
-export type ColorState = {
-  colors: Color[];
-  selected: number;
-};
-
-type ColorTuple = [number, number, number];
-
-export type AddColor = {
-  type: "rgb" | "hex" | "hsl";
-  color: ColorTuple | string;
-  opacity?: number;
-};
-interface SetColor extends AddColor {
-  index: number;
-}
+import { hslToString, rgbToString, hslToArray, rgbToArray } from "index";
+import type { ColorState, ColorTuple, Color, AddColor, SetColor } from "types";
 
 export const addColor = createEvent<AddColor>();
 export const setColor = createEvent<SetColor>();
 export const setSelectedColor = createEvent<number>();
 
-const appropriateColors = (payload: SetColor): Color => {
+export const appropriateColors = (payload: SetColor): Color => {
+  if (typeof payload.color === "string" && payload.type !== "hex") {
+    payload.color =
+      payload.type === "hsl"
+        ? hslToArray(payload.color)
+        : rgbToArray(payload.color);
+  }
+  const hex =
+    payload.type === "hex"
+      ? (payload.color as string)
+      : payload.type === "rgb"
+      ? `${convert.rgb.hex(payload.color as ColorTuple)}`
+      : `${convert.hsl.hex(payload.color as ColorTuple)}`;
+  const hsl =
+    payload.type === "hex"
+      ? convert.hex.hsl(payload.color as string)
+      : payload.type === "rgb"
+      ? convert.rgb.hsl(payload.color as ColorTuple)
+      : (payload.color as ColorTuple);
+  const rgb =
+    payload.type === "hex"
+      ? convert.hex.rgb(payload.color as string)
+      : payload.type === "hsl"
+      ? convert.hsl.rgb(payload.color as ColorTuple)
+      : (payload.color as ColorTuple);
   return {
     index: payload.index,
-    hex:
-      payload.type === "hex"
-        ? (payload.color as string)
-        : payload.type === "rgb"
-        ? `${convert.rgb.hex(payload.color as ColorTuple)}`
-        : `${convert.hsl.hex(payload.color as ColorTuple)}`,
-    hsl:
-      payload.type === "hex"
-        ? convert.hex.hsl(payload.color as string)
-        : payload.type === "rgb"
-        ? convert.rgb.hsl(payload.color as ColorTuple)
-        : (payload.color as ColorTuple),
-    rgb:
-      payload.type === "hex"
-        ? convert.hex.rgb(payload.color as string)
-        : payload.type === "hsl"
-        ? convert.hsl.rgb(payload.color as ColorTuple)
-        : (payload.color as ColorTuple),
+    hex,
+    hsl: { string: hslToString(hsl), array: hsl },
+    rgb: { string: rgbToString(rgb), array: rgb },
     opacity: payload.opacity ?? 100,
   };
 };
@@ -59,8 +46,8 @@ export const $colorState = createStore<ColorState>({
     {
       index: 0,
       hex: "FF0000",
-      hsl: [0, 100, 50],
-      rgb: [255, 0, 0],
+      hsl: { string: "hsl(0, 100%, 50%)", array: [0, 100, 50] },
+      rgb: { string: "rgb(255, 0, 0)", array: [255, 0, 0] },
       opacity: 100,
     },
   ],

@@ -1,4 +1,4 @@
-import { Selected } from "../../index";
+import type { Selected } from "types";
 
 export const setSelected = (
   selected: Selected,

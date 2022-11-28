@@ -9,10 +9,10 @@ import {
   MenuCard,
   StrokeWidth,
   PathAttributes,
-} from "../index";
+} from "index";
 import { gradientFrame } from "../styles/styles";
 
-const LeftMenu = (): JSX.Element => {
+export const LeftMenu = React.memo((): JSX.Element => {
   /* const color = getComputedStyle(document.documentElement).getPropertyValue(
     "--color1"
   ); */
@@ -48,6 +48,6 @@ const LeftMenu = (): JSX.Element => {
       })}
     </Container>
   );
-};
+});
 
-export default React.memo(LeftMenu);
+export default LeftMenu;

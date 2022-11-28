@@ -1,4 +1,4 @@
-import { Path } from "../../index";
+import { Path } from "../../index.backup";
 
 export const setPosition = (
   paths: Path[],

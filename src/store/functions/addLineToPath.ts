@@ -1,4 +1,4 @@
-import { Path, CoordSet, Coord } from "../../index";
+import type { Path, CoordSet, Coord } from "types";
 
 export const addLineToPath = (
   paths: Path[],

@@ -8,11 +8,13 @@ import {
   ColorState,
   $wheelState,
   setWheelState,
-} from "../../index";
-import { resolveToPoint, range } from "../../util/mathUtils";
-import Clip from "./Clip";
-import Clip75 from "./Clip75";
-import { $mousePos } from "../../store/mousePos";
+  resolveToPoint,
+  range,
+  $mousePos,
+  findDegree
+} from "index";
+import DonutClipPath from "./DonutClipPath";
+import DonutClipPath75 from "./DonutClipPath75";
 
 const Wrapper = styled.div`
   height: 200px;
@@ -193,8 +195,8 @@ const setNewAngle = ({
       index: colorState.selected,
       color: [
         newAngle,
-        colorState.colors[colorState.selected].hsl[1],
-        colorState.colors[colorState.selected].hsl[2],
+        colorState.colors[colorState.selected].hsl.array[1],
+        colorState.colors[colorState.selected].hsl.array[2],
       ],
     });
   }
@@ -211,7 +213,7 @@ const setNewPos = ({
     const mousePos = $mousePos.getState();
     const x = range(innerBounds.left, innerBounds.right, -20, 20, mousePos.x);
     const y = range(innerBounds.top, innerBounds.bottom, -20, 20, mousePos.y);
-    const h = colorState.colors[colorState.selected].hsl[0];
+    const h = colorState.colors[colorState.selected].hsl.array[0];
     const s = Math.floor(range(-20, 20, 0, 100, x));
     const l = Math.floor(range(-20, 20, 100, 0, y));
     const hsl = [h, s, l];
@@ -223,7 +225,7 @@ const setNewPos = ({
       sat: s,
       light: l,
     });
-    if (hsl !== colorState.colors[colorState.selected].hsl) {
+    if (hsl !== colorState.colors[colorState.selected].hsl.array) {
       setColor({
         type: "hsl",
         index: colorState.selected,
@@ -233,15 +235,7 @@ const setNewPos = ({
   }
 };
 
-const findDegree = (x: number, y: number): number => {
-  let val = (Math.atan2(x, y) / Math.PI) * 180;
-  if (val < 0) {
-    val += 360;
-  }
-  return val;
-};
-
-const ColorWheel = (): JSX.Element => {
+export const ColorWheel = React.memo((): JSX.Element => {
   const colorState = useStore($colorState);
   const { angle, outerPos, innerPos, sat, light } = useStore($wheelState);
   const ref = React.useRef<SVGSVGElement>(null);
@@ -260,25 +254,25 @@ const ColorWheel = (): JSX.Element => {
 
   useEffect(() => {
     setWheelState({
-      angle: colorState.colors[colorState.selected].hsl[0],
+      angle: colorState.colors[colorState.selected].hsl.array[0],
       innerPos: {
         x: range(
           0,
           100,
           -20,
           20,
-          colorState.colors[colorState.selected].hsl[1]
+          colorState.colors[colorState.selected].hsl.array[1]
         ),
         y: range(
           0,
           100,
           20,
           -20,
-          colorState.colors[colorState.selected].hsl[2]
+          colorState.colors[colorState.selected].hsl.array[2]
         ),
       },
       outerPos: resolveToPoint(
-        colorState.colors[colorState.selected].hsl[0],
+        colorState.colors[colorState.selected].hsl.array[0],
         73,
         true
       ),
@@ -317,8 +311,8 @@ const ColorWheel = (): JSX.Element => {
   return (
     <Wrapper>
       <Container>
-        <Clip />
-        <Clip75 />
+        <DonutClipPath />
+        <DonutClipPath75 />
         <Inner deg={angle} />
         <Outer light={light} sat={sat} />
         {/* <OuterIn light={light} sat={sat} /> */}
@@ -346,7 +340,7 @@ const ColorWheel = (): JSX.Element => {
           {outerBounds !== undefined ? (
             <InnerDot
               ref={innerDot}
-              hsl={colorState.colors[colorState.selected].hsl}
+              hsl={colorState.colors[colorState.selected].hsl.array}
               angle={angle}
               cx={innerPos.x}
               cy={innerPos.y}
@@ -356,6 +350,5 @@ const ColorWheel = (): JSX.Element => {
       </Container>
     </Wrapper>
   );
-};
-
-export default React.memo(ColorWheel);
+});
+export default ColorWheel;

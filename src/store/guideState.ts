@@ -1,44 +1,7 @@
 import { createStore, createEvent } from "effector";
-import { Color } from "./typeDeclarations";
-import { removeUndefined } from "../util/utilityFunctions";
-import { RecursivePartial } from "../util/utilityTypes";
+import { Color, RecursivePartial, GuideState } from "types";
+import { removeUndefined } from "index";
 
-export type GuidePoint = {
-  show: boolean;
-  fill: Color;
-  stroke: Color;
-  radius: number;
-  strokeWidth: number;
-};
-
-export type GuideLine = {
-  show: boolean;
-  stroke: Color;
-  strokeWidth: number;
-};
-
-export type GuideState = {
-  show: boolean;
-  endPos: {
-    show: boolean;
-    point: GuidePoint;
-  };
-  startControl: {
-    show: boolean;
-    point: GuidePoint;
-    line: GuideLine;
-  };
-  endControl: {
-    show: boolean;
-    point: GuidePoint;
-    line: GuideLine;
-  };
-  arc: {
-    show: boolean;
-    point: GuidePoint;
-    line: GuideLine;
-  };
-};
 export const setGuideState = createEvent<RecursivePartial<GuideState>>();
 export const $guideState = createStore<GuideState>({
   show: true,

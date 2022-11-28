@@ -1,15 +1,13 @@
 import { useStore } from "effector-react";
 import React, { useState, MouseEvent } from "react";
-import { $selectedState, $store, setSelectedState } from "../../index";
-import { $guideState } from "../../store/guideState";
-import { $viewBoxState } from "../../store/viewBoxState";
+import { $selectedState, $store, setSelectedState, $viewBoxState, $guideState } from "index";
 
 interface LineProps {
   pathIndex: number;
   lineIndex: number;
   stroke: string;
 }
-const EndControlLine = (props: LineProps): JSX.Element | null => {
+const EndControlLine = React.memo((props: LineProps): JSX.Element | null => {
   const store = useStore($store);
   const guideState = useStore($guideState);
   const viewBox = useStore($viewBoxState);
@@ -36,14 +34,14 @@ const EndControlLine = (props: LineProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface PointProps {
   pathIndex: number;
   lineIndex: number;
   fill: string;
 }
-const EndControlPoint = (props: PointProps): JSX.Element | null => {
+const EndControlPoint = React.memo((props: PointProps): JSX.Element | null => {
   const store = useStore($store);
   const guideState = useStore($guideState);
   const viewBox = useStore($viewBoxState);
@@ -67,7 +65,7 @@ const EndControlPoint = (props: PointProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface MoveProps {
   pathIndex: number;
@@ -77,7 +75,7 @@ interface MoveProps {
   colorOutSet: (arg0: string) => void;
   colorLineSet: (arg0: string) => void;
 }
-const EndControlMove = (props: MoveProps): JSX.Element | null => {
+const EndControlMove = React.memo((props: MoveProps): JSX.Element | null => {
   const store = useStore($store);
   const selected = useStore($selectedState);
   const guideState = useStore($guideState);
@@ -142,13 +140,13 @@ const EndControlMove = (props: MoveProps): JSX.Element | null => {
     });
   }
   return null;
-};
+});
 
 interface Props {
   pathIndex: number;
   lineIndex: number;
 }
-const EndControl = (props: Props): JSX.Element | null => {
+export const EndControl = React.memo((props: Props): JSX.Element | null => {
   const { pathIndex, lineIndex } = props;
   const store = useStore($store);
   const selected = useStore($selectedState);
@@ -202,6 +200,6 @@ const EndControl = (props: Props): JSX.Element | null => {
     );
   }
   return null;
-};
+});
 
 export default EndControl;

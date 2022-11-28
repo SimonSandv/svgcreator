@@ -1,7 +1,7 @@
 import { useStoreMap } from "effector-react";
 import { createEvent, createEffect, sample } from "effector";
 
-const InputField = ({ $store, name, type, label }) => {
+export const InputField = React.memo(({ $store, name, type, label }) => {
   const sendFormFx = createEffect((params) => {
     console.log(params);
   });
@@ -43,5 +43,5 @@ const InputField = ({ $store, name, type, label }) => {
       />
     </div>
   );
-};
-export default React.memo(InputField);
+});
+export default InputField;

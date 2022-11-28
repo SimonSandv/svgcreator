@@ -7,7 +7,7 @@ import {
   updateLineTool,
   $selectedState,
   $widgetState,
-} from "../index";
+} from "index";
 import { ReactComponent as IconMove } from "../svg/move.svg";
 import { ReactComponent as IconLine } from "../svg/line.svg";
 import { ReactComponent as IconHLine } from "../svg/hLine.svg";
@@ -32,7 +32,7 @@ import IconClose from "../svg/close.svg?component";
  */
 import { useMousePosition } from "../hooks/useMousePosition";
 
-const Widget = (): JSX.Element | null => {
+export const Widget = React.memo((): JSX.Element | null => {
   const selected = useStore($selectedState);
   const { show } = useStore($widgetState);
   const { pathIndex, lineIndex } = selected;
@@ -143,6 +143,6 @@ const Widget = (): JSX.Element | null => {
       iconDebug={{ border: false, origin: false }}
     />
   ) : null;
-};
+});
 
-export default React.memo(Widget);
+export default Widget;

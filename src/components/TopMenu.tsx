@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { MousePosition, ToolInfo } from "../index";
+import { MousePosition, ToolInfo } from "index";
 import { gradientFrame } from "../styles/styles";
 
-const TopMenu = (): JSX.Element => {
+export const TopMenu = React.memo((): JSX.Element => {
   const Container = styled.div`
     width: 100%;
     height: 100%;
@@ -20,6 +20,6 @@ const TopMenu = (): JSX.Element => {
       <ToolInfo />
     </Container>
   );
-};
+});
 
-export default React.memo(TopMenu);
+export default TopMenu;
